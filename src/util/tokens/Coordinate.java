@@ -10,6 +10,14 @@ public class Coordinate {
 		this.x = x;
 	}
 	
+	public Coordinate plus(Coordinate addend) {
+		return new Coordinate(y + addend.y, x + addend.x);
+	}
+	
+	public Coordinate minus(Coordinate subtrahend) {
+		return new Coordinate(y - subtrahend.y, x - subtrahend.x);
+	}
+	
 	@Override
 	public boolean equals(Object c) {
 		if( c instanceof Coordinate ) {
