@@ -1,6 +1,7 @@
 package tmge.game.boards;
 
 import java.util.Set;
+import java.util.function.Function;
 
 import tmge.game.tiles.Tile;
 import util.tokens.Coordinate;
@@ -38,6 +39,7 @@ public abstract class Board {
 	}
 	
 	public abstract void selectAll();
+	public abstract void selectAll(Function<Coordinate, Boolean> verifier);
 	
 	public abstract boolean remove(Coordinate location);
 	public abstract boolean put(Coordinate location, Tile tile);

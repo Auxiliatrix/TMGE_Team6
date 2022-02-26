@@ -3,6 +3,7 @@ package tmge.game.boards;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Function;
 
 import tmge.game.tiles.NullTile;
 import tmge.game.tiles.Tile;
@@ -64,6 +65,18 @@ public class TiledBoard extends Board {
 		}
 	}
 
+	@Override
+	public void selectAll(Function<Coordinate, Boolean> verifier) {
+		for( int f=0; f<height; f++ ) {
+			for( int g=0; g<width; g++ ) {
+				Coordinate coord = new Coordinate(f, g);
+				if( verifier.apply(coord) ) {
+					selected.add(coord);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean put(Coordinate location, Tile tile) {
 		if( inBounds(location) ) {
