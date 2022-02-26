@@ -3,7 +3,7 @@ package tmge.main;
 import java.util.HashSet;
 import java.util.Set;
 
-import tmge.objects.tokens.Coordinate;
+import util.tokens.Coordinate;
 
 public class Main {
 

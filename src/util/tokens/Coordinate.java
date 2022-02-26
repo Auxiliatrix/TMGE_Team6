@@ -1,4 +1,4 @@
-package tmge.objects.tokens;
+package util.tokens;
 
 public class Coordinate {
 
