@@ -1,5 +1,9 @@
 package tmge.game.tiles;
 
-public class Tile {
+public abstract class Tile {
 
+	public String type;
+	
+	public abstract boolean cycle(boolean direction);
+	
 }
