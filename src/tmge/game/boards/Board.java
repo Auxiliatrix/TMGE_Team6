@@ -39,14 +39,14 @@ public abstract class Board {
 	
 	public abstract void selectAll();
 	
-	public abstract boolean shift(Coordinate location, Coordinate vector);
-	public abstract boolean cycle(Coordinate location, boolean direction);
 	public abstract boolean remove(Coordinate location);
 	public abstract boolean put(Coordinate location, Tile tile);
+	
+	public abstract boolean shift(Coordinate location, Coordinate vector);
 	public abstract boolean swap(Coordinate location1, Coordinate location2);
 	
 	public abstract boolean shiftSelected(Coordinate vector);
-	public abstract boolean cycleSelected(boolean direction);
+	public abstract boolean swapSelected(Coordinate vector);
 	public abstract boolean rotateSelected(boolean direction);
 	
 }

@@ -4,9 +4,7 @@ public class NullTile extends Tile {
 
 	private static NullTile single_instance = null;
 	
-	private NullTile() {
-		this.type = null;
-	}
+	private NullTile() {}
 	
 	public static NullTile getInstance() {
 		if( single_instance == null ) {
@@ -15,11 +13,5 @@ public class NullTile extends Tile {
 		
 		return single_instance;
 	}
-	
-	@Override
-	public boolean cycle(boolean direction) {
-		return false;
-	}
-	
 	
 }

@@ -1,6 +1,8 @@
 package tmge.game.boards;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import tmge.game.tiles.NullTile;
 import tmge.game.tiles.Tile;
@@ -25,6 +27,10 @@ public class TiledBoard extends Board {
 				tiles[f][g] = NullTile.getInstance();
 			}
 		}
+	}
+	
+	public Tile get(Coordinate location) {
+		return tiles[location.y][location.x];
 	}
 	
 	public boolean inBounds(Coordinate location) {
@@ -59,47 +65,95 @@ public class TiledBoard extends Board {
 	}
 
 	@Override
-	public boolean shift(Coordinate location, Coordinate vector) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean cycle(Coordinate location, boolean direction) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean put(Coordinate location, Tile tile) {
+		if( inBounds(location) ) {
+			tiles[location.y][location.x] = tile;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean remove(Coordinate location) {
-		// TODO Auto-generated method stub
-		return false;
+		if( occupied(location) ) {
+			tiles[location.y][location.x] = NullTile.getInstance();
+			return true;
+		} else {
+			return false;
+		}
 	}
-
+	
 	@Override
-	public boolean put(Coordinate location, Tile tile) {
-		// TODO Auto-generated method stub
+	public boolean shift(Coordinate location, Coordinate vector) {
+		Coordinate target = location.plus(vector);
+		if( inBounds(target) ) {
+			tiles[target.y][target.x] = tiles[location.y][location.x];
+			tiles[location.y][location.x] = NullTile.getInstance();
+			return true;
+		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean swap(Coordinate location1, Coordinate location2) {
-		// TODO Auto-generated method stub
+		if( inBounds(location1) && inBounds(location2) ) {
+			Tile temp = get(location1);
+			tiles[location1.y][location1.x] = tiles[location2.y][location2.x];
+			tiles[location2.y][location2.x] = temp;
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean shiftSelected(Coordinate vector) {
-		// TODO Auto-generated method stub
-		return false;
+		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
+		List<Coordinate> targets = new ArrayList<Coordinate>();
+		List<Tile> temps = new ArrayList<Tile>();
+		for( Coordinate coord : origins ) {
+			temps.add(tiles[coord.y][coord.x]);
+			Coordinate target = coord.plus(vector);
+			if( inBounds(target) ) {
+				targets.add(target);
+			} else {
+				return false;
+			}
+		}
+		
+		for( int f=0; f<targets.size(); f++ ) {
+			tiles[targets.get(f).y][targets.get(f).x] = temps.get(f);
+			tiles[origins.get(f).y][origins.get(f).x] = NullTile.getInstance();
+		}
+		
+		return true;
 	}
 
 	@Override
-	public boolean cycleSelected(boolean direction) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean swapSelected(Coordinate vector) {
+		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
+		List<Coordinate> targets = new ArrayList<Coordinate>();
+		List<Tile> temps = new ArrayList<Tile>();
+		List<Tile> temps2 = new ArrayList<Tile>();
+		for( Coordinate coord : origins ) {
+			temps.add(tiles[coord.y][coord.x]);
+			Coordinate target = coord.plus(vector);
+			if( inBounds(target) ) {
+				targets.add(target);
+				temps2.add(tiles[target.y][target.x]);
+			} else {
+				return false;
+			}
+		}
+		
+		for( int f=0; f<targets.size(); f++ ) {
+			tiles[targets.get(f).y][targets.get(f).x] = temps.get(f);
+			tiles[origins.get(f).y][origins.get(f).x] = temps2.get(f);
+		}
+		
+		return true;
 	}
-
+	
 	@Override
 	public boolean rotateSelected(boolean direction) {
 		// TODO Auto-generated method stub
