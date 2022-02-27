@@ -120,14 +120,26 @@ public class TiledBoard extends Board {
 
 	@Override
 	public boolean canRotate(Coordinate location, Coordinate center, boolean clockwise) {
-		// TODO
-		return false;
+		if( clockwise ) {
+			Coordinate target = new Coordinate(center.y+location.x-center.x, center.x+center.y-location.y);
+			return inBounds(target);
+		} else {
+			Coordinate target = new Coordinate(center.y+center.x-location.x,center.x+location.y-center.y);
+			return inBounds(target);
+		}
 	}
 	
 	@Override
 	public void rotate(Coordinate location, Coordinate center, boolean clockwise) {
-		// TODO
-		
+		if( clockwise ) {
+			Coordinate target = new Coordinate(center.y+location.x-center.x, center.x+center.y-location.y);
+			tiles[target.y][target.x] = tiles[location.y][location.x];
+			tiles[location.y][location.x] = NullTile.getInstance();
+		} else {
+			Coordinate target = new Coordinate(center.y+center.x-location.x,center.x+location.y-center.y);
+			tiles[target.y][target.x] = tiles[location.y][location.x];
+			tiles[location.y][location.x] = NullTile.getInstance();
+		}
 	}
 	
 	@Override
@@ -147,9 +159,7 @@ public class TiledBoard extends Board {
 		}
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
-		List<Tile> temps = new ArrayList<Tile>();
 		for( Coordinate coord : origins ) {
-			temps.add(tiles[coord.y][coord.x]);
 			Coordinate target = coord.plus(vector);
 			targets.add(target);
 		}
@@ -193,9 +203,12 @@ public class TiledBoard extends Board {
 	
 	@Override
 	public boolean canRotateSelected(Coordinate center, boolean clockwise) {
-		// TODO
-		
-		return false;
+		for( Coordinate coord : selected ) {
+			if( !canRotate(coord, center, clockwise) ) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override
@@ -203,10 +216,23 @@ public class TiledBoard extends Board {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coords : origins ) {
-			
+			if( clockwise ) {
+				targets.add(new Coordinate(center.y+coords.x-center.x, center.x+center.y-coords.y));
+			} else {
+				targets.add(new Coordinate(center.y+center.x-coords.x,center.x+coords.y-center.y));
+			}
 		}
 		
-		// TODO Auto-generated method stub
+		while( !origins.isEmpty() ) {
+			Coordinate origin = origins.remove(0);
+			Coordinate target = targets.remove(0);
+			if( origins.contains(target) ) {
+				origins.add(origin);
+				targets.add(target);
+			} else {
+				rotate(origin, center, clockwise);
+			}
+		}
 	}
 	
 }
