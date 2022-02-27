@@ -44,12 +44,20 @@ public abstract class Board {
 	public abstract boolean remove(Coordinate location);
 	public abstract boolean put(Coordinate location, Tile tile);
 	
-	public abstract boolean shift(Coordinate location, Coordinate vector);
-	public abstract boolean swap(Coordinate location1, Coordinate location2);
-	public abstract boolean rotate(Coordinate location, Coordinate center, boolean clockwise);
+	// TODO: validate move and also make it not return boolean ?
 	
-	public abstract boolean shiftSelected(Coordinate vector);
-	public abstract boolean swapSelected(Coordinate vector);
-	public abstract boolean rotateSelected(Coordinate center, boolean clockwise);
+	public abstract boolean canShift(Coordinate location, Coordinate vector);
+	public abstract void shift(Coordinate location, Coordinate vector);
+	public abstract boolean canSwap(Coordinate location1, Coordinate location2);
+	public abstract void swap(Coordinate location1, Coordinate location2);
+	public abstract boolean canRotate(Coordinate location, Coordinate center, boolean clockwise);
+	public abstract void rotate(Coordinate location, Coordinate center, boolean clockwise);
+	
+	public abstract boolean canShiftSelected(Coordinate vector);
+	public abstract void shiftSelected(Coordinate vector);
+	public abstract boolean canSwapSelected(Coordinate vector);
+	public abstract void swapSelected(Coordinate vector);
+	public abstract boolean canRotateSelected(Coordinate center, boolean clockwise);
+	public abstract void rotateSelected(Coordinate center, boolean clockwise);
 	
 }

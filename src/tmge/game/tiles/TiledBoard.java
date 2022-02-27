@@ -97,34 +97,58 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean shift(Coordinate location, Coordinate vector) {
+	public boolean canShift(Coordinate location, Coordinate vector) {
+		return inBounds(location.plus(vector));
+	}
+	
+	@Override
+	public void shift(Coordinate location, Coordinate vector) {
 		if( vector.y == 0 && vector.x == 0 ) {
-			return true;
+			return;
 		}
 		Coordinate target = location.plus(vector);
-		if( inBounds(target) ) {
-			tiles[target.y][target.x] = tiles[location.y][location.x];
-			tiles[location.y][location.x] = NullTile.getInstance();
-			return true;
-		}
+		tiles[target.y][target.x] = tiles[location.y][location.x];
+		tiles[location.y][location.x] = NullTile.getInstance();
+	}
+
+	@Override
+	public boolean canSwap(Coordinate location1, Coordinate location2) {
+		return inBounds(location1) && inBounds(location2);
+	}
+
+	@Override
+	public void swap(Coordinate location1, Coordinate location2) {
+		Tile temp = get(location1);
+		tiles[location1.y][location1.x] = tiles[location2.y][location2.x];
+		tiles[location2.y][location2.x] = temp;
+	}
+
+	@Override
+	public boolean canRotate(Coordinate location, Coordinate center, boolean clockwise) {
+		// TODO
 		return false;
 	}
 	
 	@Override
-	public boolean swap(Coordinate location1, Coordinate location2) {
-		if( inBounds(location1) && inBounds(location2) ) {
-			Tile temp = get(location1);
-			tiles[location1.y][location1.x] = tiles[location2.y][location2.x];
-			tiles[location2.y][location2.x] = temp;
-			return true;
-		}
-		return false;
+	public void rotate(Coordinate location, Coordinate center, boolean clockwise) {
+		// TODO
+		
 	}
-
+	
 	@Override
-	public boolean shiftSelected(Coordinate vector) {
+	public boolean canShiftSelected(Coordinate vector) {
+		for( Coordinate coord : selected ) {
+			if( !canShift(coord, vector) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public void shiftSelected(Coordinate vector) {
 		if( vector.y == 0 && vector.x == 0 ) {
-			return true;
+			return;
 		}
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
@@ -132,11 +156,7 @@ public class TiledBoard extends Board {
 		for( Coordinate coord : origins ) {
 			temps.add(tiles[coord.y][coord.x]);
 			Coordinate target = coord.plus(vector);
-			if( inBounds(target) ) {
-				targets.add(target);
-			} else {
-				return false;
-			}
+			targets.add(target);
 		}
 		
 		while( !origins.isEmpty() ) {
@@ -149,39 +169,42 @@ public class TiledBoard extends Board {
 				shift(origin, vector);
 			}
 		}
-		
+	}
+	
+	@Override
+	public boolean canSwapSelected(Coordinate vector) {
+		for( Coordinate coord : selected ) {
+			Coordinate target = coord.plus(vector);
+			if( !canSwap(coord, target) || selected.contains(target) ) {
+				return false;
+			}
+		}
 		return true;
 	}
 	
 	@Override
-	public boolean swapSelected(Coordinate vector) {
+	public void swapSelected(Coordinate vector) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coord : origins ) {
 			Coordinate target = coord.plus(vector);
-			if( inBounds(target) && !selected.contains(target) ) {
-				targets.add(target);
-			} else {
-				return false;
-			}
+			targets.add(target);
 		}
 		
 		for( int f=0; f<targets.size(); f++ ) {
 			swap(origins.get(f), targets.get(f));
 		}
-		
-		return true;
 	}
 	
 	@Override
-	public boolean rotate(Coordinate location, Coordinate center, boolean clockwise) {
+	public boolean canRotateSelected(Coordinate center, boolean clockwise) {
 		// TODO
 		
 		return false;
 	}
 	
 	@Override
-	public boolean rotateSelected(Coordinate center, boolean clockwise) {
+	public void rotateSelected(Coordinate center, boolean clockwise) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coords : origins ) {
@@ -189,7 +212,6 @@ public class TiledBoard extends Board {
 		}
 		
 		// TODO Auto-generated method stub
-		return false;
 	}
 	
 }
