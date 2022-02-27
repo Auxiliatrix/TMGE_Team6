@@ -1,4 +1,4 @@
-package tmge.game.boards;
+package tmge.game.base;
 
 import java.util.Set;
 import java.util.function.Function;

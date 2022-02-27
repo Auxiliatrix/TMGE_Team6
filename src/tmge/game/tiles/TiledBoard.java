@@ -1,12 +1,11 @@
-package tmge.game.boards;
+package tmge.game.tiles;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
 
-import tmge.game.tiles.NullTile;
-import tmge.game.tiles.Tile;
+import tmge.game.base.Board;
 import util.tokens.Coordinate;
 
 public class TiledBoard extends Board {
@@ -99,6 +98,9 @@ public class TiledBoard extends Board {
 	
 	@Override
 	public boolean shift(Coordinate location, Coordinate vector) {
+		if( vector.y == 0 && vector.x == 0 ) {
+			return true;
+		}
 		Coordinate target = location.plus(vector);
 		if( inBounds(target) ) {
 			tiles[target.y][target.x] = tiles[location.y][location.x];
@@ -121,6 +123,9 @@ public class TiledBoard extends Board {
 
 	@Override
 	public boolean shiftSelected(Coordinate vector) {
+		if( vector.y == 0 && vector.x == 0 ) {
+			return true;
+		}
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		List<Tile> temps = new ArrayList<Tile>();
@@ -134,34 +139,35 @@ public class TiledBoard extends Board {
 			}
 		}
 		
-		for( int f=0; f<targets.size(); f++ ) {
-			tiles[targets.get(f).y][targets.get(f).x] = temps.get(f);
-			tiles[origins.get(f).y][origins.get(f).x] = NullTile.getInstance();
+		while( !origins.isEmpty() ) {
+			Coordinate origin = origins.remove(0);
+			Coordinate target = targets.remove(0);
+			if( origins.contains(target) ) {
+				origins.add(origin);
+				targets.add(target);
+			} else {
+				shift(origin, vector);
+			}
 		}
 		
 		return true;
 	}
-
+	
 	@Override
 	public boolean swapSelected(Coordinate vector) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
-		List<Tile> temps = new ArrayList<Tile>();
-		List<Tile> temps2 = new ArrayList<Tile>();
 		for( Coordinate coord : origins ) {
-			temps.add(tiles[coord.y][coord.x]);
 			Coordinate target = coord.plus(vector);
-			if( inBounds(target) ) {
+			if( inBounds(target) && !selected.contains(target) ) {
 				targets.add(target);
-				temps2.add(tiles[target.y][target.x]);
 			} else {
 				return false;
 			}
 		}
 		
 		for( int f=0; f<targets.size(); f++ ) {
-			tiles[targets.get(f).y][targets.get(f).x] = temps.get(f);
-			tiles[origins.get(f).y][origins.get(f).x] = temps2.get(f);
+			swap(origins.get(f), targets.get(f));
 		}
 		
 		return true;
