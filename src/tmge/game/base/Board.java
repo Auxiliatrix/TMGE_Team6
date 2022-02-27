@@ -50,9 +50,7 @@ public abstract class Board {
 	
 	public abstract boolean remove(Coordinate location);
 	public abstract boolean put(Coordinate location, Tile tile);
-	
-	// TODO: validate move and also make it not return boolean ?
-	
+		
 	public abstract boolean canShift(Coordinate location, Coordinate vector);
 	public abstract void shift(Coordinate location, Coordinate vector);
 	public abstract boolean canSwap(Coordinate location1, Coordinate location2);
