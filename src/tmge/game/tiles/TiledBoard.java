@@ -174,7 +174,20 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
+	public boolean rotate(Coordinate location, Coordinate center, boolean clockwise) {
+		// TODO
+		
+		return false;
+	}
+	
+	@Override
 	public boolean rotateSelected(Coordinate center, boolean clockwise) {
+		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
+		List<Coordinate> targets = new ArrayList<Coordinate>();
+		for( Coordinate coords : origins ) {
+			
+		}
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
