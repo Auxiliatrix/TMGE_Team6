@@ -174,7 +174,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean rotateSelected(boolean direction) {
+	public boolean rotateSelected(Coordinate center, boolean clockwise) {
 		// TODO Auto-generated method stub
 		return false;
 	}

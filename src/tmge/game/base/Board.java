@@ -49,6 +49,7 @@ public abstract class Board {
 	
 	public abstract boolean shiftSelected(Coordinate vector);
 	public abstract boolean swapSelected(Coordinate vector);
-	public abstract boolean rotateSelected(boolean direction);
+	
+	public abstract boolean rotateSelected(Coordinate center, boolean clockwise);
 	
 }
