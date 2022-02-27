@@ -18,10 +18,10 @@ public class TiledBoard extends Board {
 	public TiledBoard(int height, int width) {
 		selected = new HashSet<Coordinate>();
 		this.tiles = new Tile[height][width];
-		initialize();
+		loadNew();
 	}
 
-	protected void initialize() {
+	public void loadNew() {
 		for( int f=0; f<height; f++ ) {
 			for( int g=0; g<width; g++ ) {
 				tiles[f][g] = NullTile.getInstance();
@@ -39,11 +39,6 @@ public class TiledBoard extends Board {
 	
 	public boolean occupied(Coordinate location) {
 		return tiles[location.y][location.x] != NullTile.getInstance();
-	}
-	
-	@Override
-	public boolean update() {
-		return true;
 	}
 
 	@Override

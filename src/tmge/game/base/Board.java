@@ -9,8 +9,15 @@ import util.tokens.Coordinate;
 public abstract class Board {
 
 	protected Set<Coordinate> selected;
+	protected double scoreEarned;
 	
-	public abstract boolean update();
+	public abstract void loadNew();
+	
+	public double update() {
+		double addend = scoreEarned;
+		scoreEarned = 0;
+		return addend;
+	}
 	
 	public boolean select(Coordinate location) {
 		if( selected.contains(location) ) {
