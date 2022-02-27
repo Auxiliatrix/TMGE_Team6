@@ -19,6 +19,10 @@ public abstract class Board {
 		return addend;
 	}
 	
+	public boolean isSelected(Coordinate location) {
+		return selected.contains(location);
+	}
+	
 	public boolean select(Coordinate location) {
 		if( selected.contains(location) ) {
 			return false;
@@ -36,10 +40,6 @@ public abstract class Board {
 			return true;
 		}
 	}
-	
-	public boolean isSelected(Coordinate location) {
-		return selected.contains(location);
-	}
 		
 	public void deselectAll() {
 		selected.clear();
@@ -48,8 +48,8 @@ public abstract class Board {
 	public abstract void selectAll();
 	public abstract void selectAll(Function<Coordinate, Boolean> verifier);
 	
-	public abstract boolean remove(Coordinate location);
 	public abstract boolean put(Coordinate location, Tile tile);
+	public abstract boolean remove(Coordinate location);
 		
 	public abstract boolean canShift(Coordinate location, Coordinate vector);
 	public abstract void shift(Coordinate location, Coordinate vector);
