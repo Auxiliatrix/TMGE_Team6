@@ -3,9 +3,20 @@ package tmge.game.base;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Data object storing gameplay data for Players.
+ * Only one Player with a given username can exist. This is enforced by a private Constructor and a static player map.
+ */
 public class Player {
 
+	/**
+	 * Static map containing all usernames and associated Player instances.
+	 */
 	private static Map<String, Player> players = new HashMap<String, Player>();
+	
+	/**
+	 * Lowest unused ID number.
+	 */
 	private static long ID = 0L;
 	
 	protected String username;
@@ -18,6 +29,14 @@ public class Player {
 		playCounts = new HashMap<String, Integer>();
 	}
 	
+	public String getUsername() {
+		return username;
+	}
+	
+	/**
+	 * Create and return a new Player object with a unique ID.
+	 * @return
+	 */
 	public static Player createNew() {
 		while( players.containsKey(ID+"") ) {
 			ID++;
@@ -28,6 +47,11 @@ public class Player {
 		return newPlayer;
 	}
 	
+	/**
+	 * If the given username is not yet taken, create a new Player with the given username.
+	 * @param username String username to associate with Player
+	 * @return Player Created Player object if username not taken; null otherwise
+	 */
 	public static Player createNew(String username) {
 		if( players.containsKey(username) ) {
 			return null;
@@ -38,6 +62,11 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * Fetch a Player instance by username.
+	 * @param username String username associated with Player
+	 * @return Player Associated Player instance if found; null otherwise
+	 */
 	public static Player getPlayer(String username) {
 		if( players.containsKey(username) ) {
 			return players.get(username);

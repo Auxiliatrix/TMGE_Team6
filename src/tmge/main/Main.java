@@ -1,6 +1,6 @@
 package tmge.main;
 
-import tmge.game.base.GameEnvironment;
+import tmge.game.base.GameEngine;
 import tmge.game.base.Player;
 import tmge.game.tiles.TiledBoard;
 import tmge.ui.UserInterface;
@@ -8,11 +8,15 @@ import tmge.ui.UserInterface;
 public class Main {
 
 	public static void main(String[] args) {
+		TiledBoard tb = new TiledBoard(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
 		UserInterface ui = null;
 		// TODO: Set UI to implementation
-		TiledBoard tb = new TiledBoard(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
 		Player player = Player.createNew(Constants.DEFAULT_USER);
-		GameEnvironment ge = new GameEnvironment(tb, player);
+		GameEngine ge = null;
+		// TODO: Set ge to implementation
+		while( ge.tick() ) {
+			ui.display();
+		}
 		
 		// ui.display(tb);
 	}

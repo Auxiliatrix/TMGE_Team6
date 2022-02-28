@@ -8,11 +8,20 @@ import java.util.function.Function;
 import tmge.game.base.Board;
 import util.tokens.Coordinate;
 
+/**
+ * Implementation of Board that associates each coordinate in the dimensions with one Tile.
+ * Does not permit operations that would move items out of bounds.
+ * All Tile moves leave behind NullTile instances.
+ * Is synchronized in order to allow concurrent updating and manipulating.
+ */
 public class TiledBoard extends Board {
 
 	public int height;
 	public int width;
 	
+	/**
+	 * Static-sized array of Tiles in every possible Coordinate.
+	 */
 	public Tile[][] tiles;
 	
 	public TiledBoard(int height, int width) {
@@ -21,7 +30,10 @@ public class TiledBoard extends Board {
 		loadNew();
 	}
 
-	public void loadNew() {
+	/**
+	 * Resets the board and fills board with NullTile instances.
+	 */
+	public synchronized void loadNew() {
 		for( int f=0; f<height; f++ ) {
 			for( int g=0; g<width; g++ ) {
 				tiles[f][g] = NullTile.getInstance();
@@ -29,20 +41,35 @@ public class TiledBoard extends Board {
 		}
 	}
 	
-	public Tile get(Coordinate location) {
+	public synchronized Tile get(Coordinate location) {
 		return tiles[location.y][location.x];
 	}
 	
-	public boolean inBounds(Coordinate location) {
+	public synchronized boolean inBounds(Coordinate location) {
 		return location.y >= 0 && location.y < height && location.x >= 0 && location.x < width;
 	}
 	
-	public boolean occupied(Coordinate location) {
+	public synchronized boolean occupied(Coordinate location) {
 		return tiles[location.y][location.x] != NullTile.getInstance();
 	}
 
 	@Override
-	public boolean select(Coordinate location) {
+	public synchronized boolean isSelected(Coordinate location) {
+		return super.isSelected(location);
+	}
+	
+	@Override
+	public synchronized boolean deselect(Coordinate location) {
+		return super.deselect(location);
+	}
+		
+	@Override
+	public synchronized void deselectAll() {
+		super.deselectAll();
+	}
+	
+	@Override
+	public synchronized boolean select(Coordinate location) {
 		if( inBounds(location) ) {
 			return super.select(location);
 		} else {
@@ -51,7 +78,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public void selectAll() {
+	public synchronized void selectAll() {
 		for( int f=0; f<height; f++ ) {
 			for( int g=0; g<width; g++ ) {
 				select(new Coordinate(f, g));
@@ -60,7 +87,7 @@ public class TiledBoard extends Board {
 	}
 
 	@Override
-	public void selectAll(Function<Coordinate, Boolean> verifier) {
+	public synchronized void selectAll(Function<Coordinate, Boolean> verifier) {
 		for( int f=0; f<height; f++ ) {
 			for( int g=0; g<width; g++ ) {
 				Coordinate coord = new Coordinate(f, g);
@@ -72,7 +99,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean put(Coordinate location, Tile tile) {
+	public synchronized boolean put(Coordinate location, Tile tile) {
 		if( inBounds(location) ) {
 			tiles[location.y][location.x] = tile;
 			return true;
@@ -82,7 +109,7 @@ public class TiledBoard extends Board {
 	}
 
 	@Override
-	public boolean remove(Coordinate location) {
+	public synchronized boolean remove(Coordinate location) {
 		if( occupied(location) ) {
 			tiles[location.y][location.x] = NullTile.getInstance();
 			return true;
@@ -92,12 +119,12 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean canShift(Coordinate location, Coordinate vector) {
+	public synchronized boolean canShift(Coordinate location, Coordinate vector) {
 		return inBounds(location.plus(vector));
 	}
 	
 	@Override
-	public void shift(Coordinate location, Coordinate vector) {
+	public synchronized void shift(Coordinate location, Coordinate vector) {
 		if( vector.y == 0 && vector.x == 0 ) {
 			return;
 		}
@@ -107,19 +134,19 @@ public class TiledBoard extends Board {
 	}
 
 	@Override
-	public boolean canSwap(Coordinate location1, Coordinate location2) {
+	public synchronized boolean canSwap(Coordinate location1, Coordinate location2) {
 		return inBounds(location1) && inBounds(location2);
 	}
 
 	@Override
-	public void swap(Coordinate location1, Coordinate location2) {
+	public synchronized void swap(Coordinate location1, Coordinate location2) {
 		Tile temp = get(location1);
 		tiles[location1.y][location1.x] = tiles[location2.y][location2.x];
 		tiles[location2.y][location2.x] = temp;
 	}
 
 	@Override
-	public boolean canRotate(Coordinate location, Coordinate center, boolean clockwise) {
+	public synchronized boolean canRotate(Coordinate location, Coordinate center, boolean clockwise) {
 		if( clockwise ) {
 			Coordinate target = new Coordinate(center.y+location.x-center.x, center.x+center.y-location.y);
 			return inBounds(target);
@@ -130,7 +157,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public void rotate(Coordinate location, Coordinate center, boolean clockwise) {
+	public synchronized void rotate(Coordinate location, Coordinate center, boolean clockwise) {
 		if( clockwise ) {
 			Coordinate target = new Coordinate(center.y+location.x-center.x, center.x+center.y-location.y);
 			tiles[target.y][target.x] = tiles[location.y][location.x];
@@ -143,7 +170,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean canShiftSelected(Coordinate vector) {
+	public synchronized boolean canShiftSelected(Coordinate vector) {
 		for( Coordinate coord : selected ) {
 			if( !canShift(coord, vector) ) {
 				return false;
@@ -153,7 +180,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public void shiftSelected(Coordinate vector) {
+	public synchronized void shiftSelected(Coordinate vector) {
 		if( vector.y == 0 && vector.x == 0 ) {
 			return;
 		}
@@ -177,7 +204,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean canSwapSelected(Coordinate vector) {
+	public synchronized boolean canSwapSelected(Coordinate vector) {
 		for( Coordinate coord : selected ) {
 			Coordinate target = coord.plus(vector);
 			if( !canSwap(coord, target) || selected.contains(target) ) {
@@ -188,7 +215,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public void swapSelected(Coordinate vector) {
+	public synchronized void swapSelected(Coordinate vector) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coord : origins ) {
@@ -202,7 +229,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public boolean canRotateSelected(Coordinate center, boolean clockwise) {
+	public synchronized boolean canRotateSelected(Coordinate center, boolean clockwise) {
 		for( Coordinate coord : selected ) {
 			if( !canRotate(coord, center, clockwise) ) {
 				return false;
@@ -212,7 +239,7 @@ public class TiledBoard extends Board {
 	}
 	
 	@Override
-	public void rotateSelected(Coordinate center, boolean clockwise) {
+	public synchronized void rotateSelected(Coordinate center, boolean clockwise) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected);
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coords : origins ) {

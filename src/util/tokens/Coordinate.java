@@ -1,5 +1,9 @@
 package util.tokens;
 
+/**
+ * Tuple equivalent for y,x coordinate pairs.
+ * Override Object's hashCode() method to allow for custom equivalency checking in Collections.
+ */
 public class Coordinate {
 
 	public int y;
@@ -28,6 +32,9 @@ public class Coordinate {
 	}
 	
 	@Override
+	/**
+	 * Two objects have the same hashcode if they have the same y and x coordinate values.
+	 */
 	public int hashCode() {
 		return toString().hashCode();
 	}
