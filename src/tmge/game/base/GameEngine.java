@@ -13,8 +13,13 @@ public abstract class GameEngine {
 	public GameEngine(Board initialState, Player player) {
 		state = initialState;
 		score = 0;
+		this.player = player;
 	}
 	
+	/**
+	 * Ticks forward the game logic.
+	 * @return Whether the program is finished
+	 */
 	public abstract boolean tick();
 	
 }
