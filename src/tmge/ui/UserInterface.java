@@ -1,14 +1,22 @@
 package tmge.ui;
 
+import tmge.game.tiles.TiledBoard;
 import tmge.game.base.Board;
+import tmge.main.Constants;
+
+import java.awt.*;
+import javax.swing.*;
+
+import static tmge.main.Constants.UI_HEIGHT;
+import static tmge.main.Constants.UI_WIDTH;
 
 /**
  * UI for display and control
  */
-public abstract class UserInterface {
+public class UserInterface {
 
 	protected Board board;
-	
+	protected Grid grid;
 	public UserInterface(Board board) {
 		this.board = board;
 		initialize();
@@ -17,11 +25,19 @@ public abstract class UserInterface {
 	/**
 	 * Initialize and open display window
 	 */
-	public abstract void initialize();
+	public void initialize()
+	{
+		grid = new Grid();
+
+	}
 	
 	/**
 	 * Update display window with board state
 	 */
-	public abstract void display();
+	public void display()
+	{
+		System.out.println("updating UI");
+		grid.update((TiledBoard)board);
+	}
 	
 }
