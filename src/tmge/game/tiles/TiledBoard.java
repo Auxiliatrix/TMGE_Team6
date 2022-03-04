@@ -37,6 +37,10 @@ public abstract class TiledBoard<E> extends Board {
 	 */
 	public abstract void loadNew();
 	
+	public E getDefault() {
+		return defaultTile;
+	}
+	
 	public int getHeight() {
 		return height;
 	}
