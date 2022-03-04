@@ -9,6 +9,8 @@ import util.tokens.Coordinate;
 
 public class BejeweledEngine extends GameEngine {
 
+	protected static final Coordinate GRAVITY_VECTOR = new Coordinate(1,0);
+	
 	protected BejeweledBoard state;
 	protected Player player;
 	
@@ -20,12 +22,25 @@ public class BejeweledEngine extends GameEngine {
 
 	@Override
 	public boolean tick() {
-		Coordinate gravityVector = new Coordinate(1,0);
-		Set<Coordinate> selected = new HashSet<Coordinate>(state.getAll(c -> {
-			Coordinate target = c.plus(gravityVector);
-			return !state.inBounds(target) && state.get(target) == null;
-		}));
+		
+		
 		return false;
+	}
+	
+	protected boolean gravity() {
+		Set<Coordinate> selected = new HashSet<Coordinate>();
+		for( int f=state.getHeight()-1; f>=0; f-- ) {
+			selected.addAll(state.getAll(c -> {
+				Coordinate target = c.plus(GRAVITY_VECTOR);
+				return state.inBounds(target) && state.get(target) == state.getDefault();
+			}));
+		}
+		
+		if( selected.size() > 0 ) {
+			state.shiftSelected(selected, GRAVITY_VECTOR);
+		} else {
+			
+		}
 	}
 
 }

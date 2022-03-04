@@ -11,7 +11,7 @@ import tmge.game.tiles.TiledBoard;
 public class BejeweledBoard extends TiledBoard<Color> {
 
 	public BejeweledBoard(int height, int width) {
-		super(height, width, null);
+		super(height, width, Color.GRAY);
 	}
 
 	@Override
