@@ -1,9 +1,9 @@
 package tmge.game.base;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
-import tmge.game.tiles.TileGroup;
 import util.tokens.Coordinate;
 
 /**
@@ -87,26 +87,26 @@ public abstract class Board {
 	 * @param vector Coordinate containing vector to move Tile by
 	 * @return Whether the Tiles can be shifted
 	 */
-	public abstract boolean canShiftSelected(TileGroup selected, Coordinate vector);
+	public abstract boolean canShiftSelected(Set<Coordinate> selected, Coordinate vector);
 
 	/**
 	 * Shift the selected Tiles by a given vector.
 	 * @param vector Coordinate containing vector to move Tile by
 	 */
-	public abstract void shiftSelected(TileGroup selected, Coordinate vector);
+	public abstract void shiftSelected(Set<Coordinate> selected, Coordinate vector);
 	
 	/**
 	 * Whether the selected Tiles can be swapped with the relative location given by a vector.
 	 * @param vector Coordinate containing relative vector to swap to
 	 * @return Whether the Tiles can be swapped
 	 */
-	public abstract boolean canSwapSelected(TileGroup selected, Coordinate vector);
+	public abstract boolean canSwapSelected(Set<Coordinate> selected, Coordinate vector);
 	
 	/**
 	 * Swap the selected Tiles with the relative location given by a vector.
 	 * @param vector Coordinate containing relative vector to swap to
 	 */
-	public abstract void swapSelected(TileGroup selected, Coordinate vector);
+	public abstract void swapSelected(Set<Coordinate> selected, Coordinate vector);
 	
 	/**
 	 * Whether the selected Tiles can be moved by rotating them 90 degrees in a given direction around a center.
@@ -114,13 +114,13 @@ public abstract class Board {
 	 * @param clockwise Whether to rotate in a clockwise direction
 	 * @return Whether the Tiles can be rotated
 	 */
-	public abstract boolean canRotateSelected(TileGroup selected, Coordinate center, boolean clockwise);
+	public abstract boolean canRotateSelected(Set<Coordinate> selected, Coordinate center, boolean clockwise);
 	
 	/**
 	 * Move the selected Tiles by rotating them 90 degrees in a given direction around a center.
 	 * @param center Coordinate location of relative center
 	 * @param clockwise Whether to rotate in a clockwise direction
 	 */
-	public abstract void rotateSelected(TileGroup selected, Coordinate center, boolean clockwise);
+	public abstract void rotateSelected(Set<Coordinate> selected, Coordinate center, boolean clockwise);
 	
 }
