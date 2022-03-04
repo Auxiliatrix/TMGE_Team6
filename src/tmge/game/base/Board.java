@@ -3,7 +3,6 @@ package tmge.game.base;
 import java.util.List;
 import java.util.function.Function;
 
-import tmge.game.tiles.Tile;
 import tmge.game.tiles.TileGroup;
 import util.tokens.Coordinate;
 
@@ -28,14 +27,6 @@ public abstract class Board {
 	 * @param verifier Truth function that represents Coordinate satisfaction criteria
 	 */
 	public abstract List<Coordinate> getAll(Function<Coordinate, Boolean> verifier);
-	
-	/**
-	 * Put the given Tile in a location on the board.
-	 * @param location Coordinate location to place Tile
-	 * @param tile Tile to place
-	 * @return Whether the operation was successful
-	 */
-	public abstract boolean put(Coordinate location, Tile tile);
 	
 	/**
 	 * Remove the Tile in a location on the board.
