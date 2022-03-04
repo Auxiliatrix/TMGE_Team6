@@ -22,7 +22,7 @@ public abstract class TiledBoard<E> extends Board {
 	 * Static-sized array of Tiles in every possible Coordinate.
 	 */
 	public E[][] tiles;
-	private E defaultTile;
+	protected E defaultTile;
 	
 	public TiledBoard(int height, int width, E defaultTile) {
 		this.height = height;
