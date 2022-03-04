@@ -4,6 +4,9 @@ import java.awt.Color;
 
 import tmge.game.tiles.TiledBoard;
 
+/**
+ * 
+ */
 public class BejeweledBoard extends TiledBoard<Color> {
 
 	public BejeweledBoard(int height, int width) {
