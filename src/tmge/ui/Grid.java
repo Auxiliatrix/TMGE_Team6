@@ -9,8 +9,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import tmge.game.base.Board;
-import static tmge.main.Constants.UI_HEIGHT;
-import static tmge.main.Constants.UI_WIDTH;
 
 
 public class Grid{

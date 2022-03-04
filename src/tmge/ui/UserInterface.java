@@ -1,14 +1,8 @@
 package tmge.ui;
 
-import tmge.game.tiles.TiledBoard;
 import tmge.game.base.Board;
-import tmge.main.Constants;
+import tmge.game.tiles.TiledBoard;
 
-import java.awt.*;
-import javax.swing.*;
-
-import static tmge.main.Constants.UI_HEIGHT;
-import static tmge.main.Constants.UI_WIDTH;
 
 /**
  * UI for display and control
