@@ -8,12 +8,12 @@ import tmge.game.base.Board;
 import util.tokens.Coordinate;
 
 /**
- * Implementation of Board that associates each coordinate in the dimensions with one Tile.
+ * Implementation of Board that associates each coordinate in the dimensions with one tile.
  * Does not permit operations that would move items out of bounds.
- * All Tile moves leave behind NullTile instances.
+ * All tile moves leave behind default instances.
  * Is synchronized in order to allow concurrent updating and manipulating.
  */
-public class TiledBoard extends Board {
+public abstract class TiledBoard<E> extends Board {
 
 	public int height;
 	public int width;
@@ -21,27 +21,22 @@ public class TiledBoard extends Board {
 	/**
 	 * Static-sized array of Tiles in every possible Coordinate.
 	 */
-	public Tile[][] tiles;
+	public E[][] tiles;
+	private E defaultTile;
 	
-	public TiledBoard(int height, int width) {
+	public TiledBoard(int height, int width, E defaultTile) {
 		this.height = height;
 		this.width = width;
-		this.tiles = new Tile[height][width];
+		this.defaultTile = defaultTile;
 		loadNew();
 	}
 
 	/**
-	 * Resets the board and fills board with NullTile instances.
+	 * Initialize tiles array
 	 */
-	public synchronized void loadNew() {
-		for( int f=0; f<height; f++ ) {
-			for( int g=0; g<width; g++ ) {
-				tiles[f][g] = NullTile.getInstance();
-			}
-		}
-	}
+	public abstract void loadNew();
 	
-	public synchronized Tile get(Coordinate location) {
+	public synchronized E get(Coordinate location) {
 		return tiles[location.y][location.x];
 	}
 	
@@ -78,10 +73,9 @@ public class TiledBoard extends Board {
 		return all;
 	}
 	
-	@Override
-	public synchronized boolean put(Coordinate location, Tile tile) {
+	public synchronized boolean put(Coordinate location, E object) {
 		if( inBounds(location) ) {
-			tiles[location.y][location.x] = tile;
+			tiles[location.y][location.x] = object;
 			return true;
 		} else {
 			return false;
@@ -91,7 +85,7 @@ public class TiledBoard extends Board {
 	@Override
 	public synchronized boolean remove(Coordinate location) {
 		if( occupied(location) ) {
-			tiles[location.y][location.x] = NullTile.getInstance();
+			tiles[location.y][location.x] = defaultTile;
 			return true;
 		} else {
 			return false;
@@ -110,7 +104,7 @@ public class TiledBoard extends Board {
 		}
 		Coordinate target = location.plus(vector);
 		tiles[target.y][target.x] = tiles[location.y][location.x];
-		tiles[location.y][location.x] = NullTile.getInstance();
+		tiles[location.y][location.x] = defaultTile;
 	}
 
 	@Override
@@ -120,7 +114,7 @@ public class TiledBoard extends Board {
 
 	@Override
 	public synchronized void swap(Coordinate location1, Coordinate location2) {
-		Tile temp = get(location1);
+		E temp = get(location1);
 		tiles[location1.y][location1.x] = tiles[location2.y][location2.x];
 		tiles[location2.y][location2.x] = temp;
 	}
@@ -141,11 +135,11 @@ public class TiledBoard extends Board {
 		if( clockwise ) {
 			Coordinate target = new Coordinate(center.y+location.x-center.x, center.x+center.y-location.y);
 			tiles[target.y][target.x] = tiles[location.y][location.x];
-			tiles[location.y][location.x] = NullTile.getInstance();
+			tiles[location.y][location.x] = defaultTile;
 		} else {
 			Coordinate target = new Coordinate(center.y+center.x-location.x,center.x+location.y-center.y);
 			tiles[target.y][target.x] = tiles[location.y][location.x];
-			tiles[location.y][location.x] = NullTile.getInstance();
+			tiles[location.y][location.x] = defaultTile;
 		}
 	}
 	

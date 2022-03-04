@@ -5,6 +5,8 @@ package tmge.game.tiles;
  */
 public class NullTile extends Tile {
 
+	private NullTile() {}
+	
 	private static NullTile single_instance = null;
 		
 	/**
