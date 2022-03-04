@@ -2,10 +2,10 @@ package tmge.game.tiles;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import tmge.game.base.Board;
 import util.tokens.Coordinate;
+import util.tokens.CoordinateGroup;
 
 /**
  * Implementation of Board that associates each coordinate in the dimensions with one tile.
@@ -61,25 +61,11 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized List<Coordinate> getAll() {
-		List<Coordinate> all = new ArrayList<Coordinate>();
+	public synchronized CoordinateGroup getAll() {
+		CoordinateGroup all = new CoordinateGroup();
 		for( int f=0; f<height; f++ ) {
 			for( int g=0; g<width; g++ ) {
-				all.add(new Coordinate(f, g));
-			}
-		}
-		return all;
-	}
-
-	@Override
-	public synchronized List<Coordinate> getAll(Function<Coordinate, Boolean> verifier) {
-		List<Coordinate> all = new ArrayList<Coordinate>();
-		for( int f=0; f<height; f++ ) {
-			for( int g=0; g<width; g++ ) {
-				Coordinate coord = new Coordinate(f, g);
-				if( verifier.apply(coord) ) {
-					all.add(coord);
-				}
+				all.select(new Coordinate(f, g));
 			}
 		}
 		return all;
@@ -156,7 +142,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized boolean canShiftSelected(TileGroup selected, Coordinate vector) {
+	public synchronized boolean canShiftSelected(CoordinateGroup selected, Coordinate vector) {
 		for( Coordinate coord : selected.getSelected() ) {
 			if( !canShift(coord, vector) ) {
 				return false;
@@ -166,7 +152,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized void shiftSelected(TileGroup selected, Coordinate vector) {
+	public synchronized void shiftSelected(CoordinateGroup selected, Coordinate vector) {
 		if( vector.y == 0 && vector.x == 0 ) {
 			return;
 		}
@@ -190,7 +176,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized boolean canSwapSelected(TileGroup selected, Coordinate vector) {
+	public synchronized boolean canSwapSelected(CoordinateGroup selected, Coordinate vector) {
 		for( Coordinate coord : selected.getSelected() ) {
 			Coordinate target = coord.plus(vector);
 			if( !canSwap(coord, target) || selected.isSelected(target) ) {
@@ -201,7 +187,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized void swapSelected(TileGroup selected, Coordinate vector) {
+	public synchronized void swapSelected(CoordinateGroup selected, Coordinate vector) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected.getSelected());
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coord : origins ) {
@@ -215,7 +201,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized boolean canRotateSelected(TileGroup selected, Coordinate center, boolean clockwise) {
+	public synchronized boolean canRotateSelected(CoordinateGroup selected, Coordinate center, boolean clockwise) {
 		for( Coordinate coord : selected.getSelected() ) {
 			if( !canRotate(coord, center, clockwise) ) {
 				return false;
@@ -225,7 +211,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	@Override
-	public synchronized void rotateSelected(TileGroup selected, Coordinate center, boolean clockwise) {
+	public synchronized void rotateSelected(CoordinateGroup selected, Coordinate center, boolean clockwise) {
 		List<Coordinate> origins = new ArrayList<Coordinate>(selected.getSelected());
 		List<Coordinate> targets = new ArrayList<Coordinate>();
 		for( Coordinate coords : origins ) {

@@ -1,10 +1,7 @@
 package tmge.game.base;
 
-import java.util.List;
-import java.util.function.Function;
-
-import tmge.game.tiles.TileGroup;
 import util.tokens.Coordinate;
+import util.tokens.CoordinateGroup;
 
 /**
  * Abstract class with functions relevant to manipulating pieces on a board.
@@ -20,13 +17,7 @@ public abstract class Board {
 	/**
 	 * Select all available Coordinates.
 	 */
-	public abstract List<Coordinate> getAll();
-	
-	/**
-	 * Select all available Coordinates that satisfy the criteria.
-	 * @param verifier Truth function that represents Coordinate satisfaction criteria
-	 */
-	public abstract List<Coordinate> getAll(Function<Coordinate, Boolean> verifier);
+	public abstract CoordinateGroup getAll();
 	
 	/**
 	 * Remove the Tile in a location on the board.
@@ -87,26 +78,26 @@ public abstract class Board {
 	 * @param vector Coordinate containing vector to move Tile by
 	 * @return Whether the Tiles can be shifted
 	 */
-	public abstract boolean canShiftSelected(TileGroup selected, Coordinate vector);
+	public abstract boolean canShiftSelected(CoordinateGroup selected, Coordinate vector);
 
 	/**
 	 * Shift the selected Tiles by a given vector.
 	 * @param vector Coordinate containing vector to move Tile by
 	 */
-	public abstract void shiftSelected(TileGroup selected, Coordinate vector);
+	public abstract void shiftSelected(CoordinateGroup selected, Coordinate vector);
 	
 	/**
 	 * Whether the selected Tiles can be swapped with the relative location given by a vector.
 	 * @param vector Coordinate containing relative vector to swap to
 	 * @return Whether the Tiles can be swapped
 	 */
-	public abstract boolean canSwapSelected(TileGroup selected, Coordinate vector);
+	public abstract boolean canSwapSelected(CoordinateGroup selected, Coordinate vector);
 	
 	/**
 	 * Swap the selected Tiles with the relative location given by a vector.
 	 * @param vector Coordinate containing relative vector to swap to
 	 */
-	public abstract void swapSelected(TileGroup selected, Coordinate vector);
+	public abstract void swapSelected(CoordinateGroup selected, Coordinate vector);
 	
 	/**
 	 * Whether the selected Tiles can be moved by rotating them 90 degrees in a given direction around a center.
@@ -114,13 +105,13 @@ public abstract class Board {
 	 * @param clockwise Whether to rotate in a clockwise direction
 	 * @return Whether the Tiles can be rotated
 	 */
-	public abstract boolean canRotateSelected(TileGroup selected, Coordinate center, boolean clockwise);
+	public abstract boolean canRotateSelected(CoordinateGroup selected, Coordinate center, boolean clockwise);
 	
 	/**
 	 * Move the selected Tiles by rotating them 90 degrees in a given direction around a center.
 	 * @param center Coordinate location of relative center
 	 * @param clockwise Whether to rotate in a clockwise direction
 	 */
-	public abstract void rotateSelected(TileGroup selected, Coordinate center, boolean clockwise);
+	public abstract void rotateSelected(CoordinateGroup selected, Coordinate center, boolean clockwise);
 	
 }

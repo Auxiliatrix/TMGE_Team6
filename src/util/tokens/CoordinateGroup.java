@@ -1,23 +1,41 @@
-package tmge.game.tiles;
+package util.tokens;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
-import util.tokens.Coordinate;
-
-public class TileGroup {
+public class CoordinateGroup {
 	
 	/**
 	 * Set of Coordinates that can be manipulated as a group using appropriate functions.
 	 */
 	protected Set<Coordinate> selected;
 
-	public TileGroup() {
+	public CoordinateGroup() {
 		selected = new HashSet<Coordinate>();
+	}
+	
+	public CoordinateGroup(Collection<Coordinate> coordinates) {
+		selected = new HashSet<Coordinate>(coordinates);
+	}
+	
+	public CoordinateGroup(CoordinateGroup cg) {
+		this(cg.getSelected());
 	}
 	
 	public Set<Coordinate> getSelected() {
 		return new HashSet<Coordinate>(selected);
+	}
+	
+	public CoordinateGroup getAll(Function<Coordinate, Boolean> verifier) {
+		CoordinateGroup all = new CoordinateGroup();
+		for( Coordinate coord : selected ) {
+			if( verifier.apply(coord) ) {
+				all.select(coord);
+			}
+		}
+		return all;
 	}
 	
 	/**
@@ -41,6 +59,12 @@ public class TileGroup {
 			selected.add(location);
 			return true;
 		}
+	}
+	
+	public boolean selectAll(CoordinateGroup location) {
+		int prevSize = selected.size();
+		selected.addAll(location.getSelected());
+		return prevSize != selected.size();
 	}
 	
 	/**
