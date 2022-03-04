@@ -1,7 +1,11 @@
 package tmge.game.bejeweled;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import tmge.game.base.GameEngine;
 import tmge.game.base.Player;
+import util.tokens.Coordinate;
 
 public class BejeweledEngine extends GameEngine {
 
@@ -16,6 +20,11 @@ public class BejeweledEngine extends GameEngine {
 
 	@Override
 	public boolean tick() {
+		Coordinate gravityVector = new Coordinate(1,0);
+		Set<Coordinate> selected = new HashSet<Coordinate>(state.getAll(c -> {
+			Coordinate target = c.plus(gravityVector);
+			return !state.inBounds(target) && state.get(target) == null;
+		}));
 		return false;
 	}
 
