@@ -5,10 +5,15 @@ package tmge.game.base;
  */
 public abstract class GameEngine {
 
+	public Board state;
 	public double score;
-		
-	public GameEngine() {
+	
+	public Player player;
+	
+	public GameEngine(Board initialState, Player player) {
+		state = initialState;
 		score = 0;
+		this.player = player;
 	}
 	
 	/**
