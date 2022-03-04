@@ -6,9 +6,7 @@ package tmge.game.tiles;
 public class NullTile extends Tile {
 
 	private static NullTile single_instance = null;
-	
-	private NullTile() {}
-	
+		
 	/**
 	 * Get the static singleton instance of a NullTile object.
 	 * @return NullTile singleton
