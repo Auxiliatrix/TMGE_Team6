@@ -36,6 +36,14 @@ public abstract class TiledBoard<E> extends Board {
 	 */
 	public abstract void loadNew();
 	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
 	public synchronized E get(Coordinate location) {
 		return tiles[location.y][location.x];
 	}
