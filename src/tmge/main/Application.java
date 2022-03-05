@@ -1,24 +1,22 @@
 package tmge.main;
 
-import tmge.game.base.Board;
-import tmge.game.base.GameEngine;
+import java.util.Scanner;
+
 import tmge.game.base.Player;
-import tmge.game.base.TiledBoard;
+import tmge.game.bejeweled.BejeweledBoard;
+import tmge.game.bejeweled.BejeweledEngine;
 import tmge.ui.UserInterface;
 
 public class Application {
 
-	public static final void main(String[] args) {
-		Board board = new TiledBoard(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
+	public static final void main(String[] args) throws InterruptedException {
+		BejeweledBoard board = new BejeweledBoard(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
 		UserInterface ui = new UserInterface(board);
-		GameEngine ge = new GameEngine(board, Player.createNew(Constants.DEFAULT_USER));
-		// TODO: Set ge to implementation
-		while( ge.tick() ) {
+		BejeweledEngine engine = new BejeweledEngine(board, Player.createNew(Constants.DEFAULT_USER));
+		while( engine.tick() ) {
 			ui.display();
-			Thread.sleep(Constants.TICK_DURATION);
+			(new Scanner(System.in)).nextLine();
 		}
-		
-		// ui.display(tb);
 	}
 	
 }
