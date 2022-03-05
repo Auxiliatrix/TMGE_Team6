@@ -1,6 +1,5 @@
 package tmge.game.base;
 
-import tmge.game.tiles.TiledBoard;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 

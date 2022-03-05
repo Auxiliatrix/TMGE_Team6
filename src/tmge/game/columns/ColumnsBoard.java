@@ -3,7 +3,7 @@ package tmge.game.columns;
 import java.awt.Color;
 import java.util.List;
 
-import tmge.game.tiles.TiledBoard;
+import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 
 public class ColumnsBoard extends TiledBoard<Color> {

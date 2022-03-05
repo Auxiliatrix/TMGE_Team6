@@ -6,7 +6,7 @@ import java.util.List;
 
 import tmge.game.base.FallingEngine;
 import tmge.game.base.Player;
-import tmge.game.tiles.TiledBoard;
+import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 

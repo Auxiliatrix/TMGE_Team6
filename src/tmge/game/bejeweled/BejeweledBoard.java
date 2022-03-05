@@ -2,7 +2,7 @@ package tmge.game.bejeweled;
 
 import java.awt.Color;
 
-import tmge.game.tiles.TiledBoard;
+import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 
 /**
