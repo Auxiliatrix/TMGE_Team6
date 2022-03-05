@@ -151,7 +151,7 @@ public class ColumnsEngine extends FallingEngine<Color> {
 			}
 		}
 		
-		for( CoordinateGroup group : state.getGroups(new Coordinate(-1,-1)) ) {
+		for( CoordinateGroup group : state.getGroups(new Coordinate(-1,1)) ) {
 			if( group.size() >= 3 ) {
 				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
 				if( state.get(groupList.get(0)) != state.getDefault() ) {
