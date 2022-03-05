@@ -1,5 +1,7 @@
 package tmge.game.bejeweled;
 
+import java.awt.event.KeyEvent;
+
 import tmge.ui.Grid;
 import util.tokens.Coordinate;
 
@@ -30,7 +32,7 @@ public class BejeweledGrid extends Grid {
 	}
 
 	@Override
-	public void onPress(String key) {
+	public void onPress(KeyEvent key) {
 		return;
 	}
 

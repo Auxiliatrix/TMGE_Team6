@@ -1,5 +1,7 @@
 package tmge.game.columns;
 
+import java.awt.event.KeyEvent;
+
 import tmge.ui.Grid;
 import util.tokens.Coordinate;
 
@@ -18,7 +20,7 @@ public class ColumnsGrid extends Grid {
 	}
 
 	@Override
-	public void onPress(String key) {
+	public void onPress(KeyEvent key) {
 		// TODO Auto-generated method stub
 		
 	}
