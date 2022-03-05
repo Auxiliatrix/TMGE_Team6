@@ -12,9 +12,6 @@ public class BejeweledGrid extends Grid {
 	public BejeweledGrid(int height, int width, BejeweledEngine engine) {
 		super(height, width);
 		this.engine = engine;
-		if( engine == null ) {
-			System.out.println("engine1");
-		}
 		selection = null;
 	}
 	
