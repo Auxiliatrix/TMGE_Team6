@@ -47,8 +47,11 @@ public class ColumnsEngine extends FallingEngine<Color> {
 				return false;
 			}
 		}
+		piece.clear();
 		for( int f=0; f<COLUMN_HEIGHT; f++ ) {
-			state.put(new Coordinate(f, middleX), getRandomValidColor());
+			Coordinate spawnLocation = new Coordinate(f, middleX);
+			state.put(spawnLocation, getRandomValidColor());
+			piece.add(spawnLocation);
 		}
 		return true;
 	}
@@ -56,6 +59,23 @@ public class ColumnsEngine extends FallingEngine<Color> {
 	@Override
 	public boolean tick() {
 		return gravity() || match() || spawn();
+	}
+	
+	@Override
+	protected boolean gravity() {
+		CoordinateGroup unstable = unstable();
+		boolean pieceFalling = true;
+		for( Coordinate piecePiece : piece ) {
+			pieceFalling &= unstable.contains(piecePiece);
+		}
+		if( pieceFalling ) {
+			CoordinateGroup newPiece = new CoordinateGroup();
+			for( Coordinate coord : piece ) {
+				newPiece.add(coord.plus(GRAVITY_VECTOR));
+			}
+			piece = newPiece;
+		}
+		return super.gravity();
 	}
 	
 	@Override
