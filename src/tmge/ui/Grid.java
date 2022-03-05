@@ -87,7 +87,7 @@ public abstract class Grid {
                         }
                     }
                     
-                    SelectablePane sp = new SelectablePane(row, col, border, c -> {onSelect(c);});
+                    SelectablePane sp = new SelectablePane(row, col, border, c -> onSelect(c));
                     add(sp, gbc);
                 }
             }

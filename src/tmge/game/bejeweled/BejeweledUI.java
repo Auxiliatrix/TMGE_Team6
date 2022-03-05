@@ -12,10 +12,6 @@ public class BejeweledUI extends UserInterface {
 	public BejeweledUI(TiledBoard<Color> board, BejeweledEngine engine) {
 		super(board);
 		this.engine = engine;
-	}
-
-	@Override
-	public void initialize() {
 		grid = new BejeweledGrid(board.height, board.width, engine);
 	}
 
