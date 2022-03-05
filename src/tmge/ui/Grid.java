@@ -38,7 +38,7 @@ public abstract class Grid {
     }
     
     public boolean select(Coordinate coordinate) {
-    	int index = width*coordinate.x + coordinate.y;
+    	int index = width*coordinate.y + coordinate.x;
     	SelectablePane sp = (SelectablePane) frame.getContentPane().getComponent(index);
     	sp.select();
     	return sp.isSelected();
