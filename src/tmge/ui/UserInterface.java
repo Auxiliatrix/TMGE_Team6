@@ -36,8 +36,17 @@ public class UserInterface {
 	 */
 	public void display()
 	{
-		System.out.println("updating UI");
+		//System.out.println("updating UI");
 		grid.update((TiledBoard)board);
 	}
+
+	/**
+	 * API made for game engine, to (un)select a tile.
+	 */
+	public void select(int row, int col)
+	{
+		grid.select(row, col);
+	}
+
 	
 }
