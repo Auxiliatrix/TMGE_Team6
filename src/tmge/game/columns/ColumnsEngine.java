@@ -1,10 +1,13 @@
 package tmge.game.columns;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import tmge.game.base.FallingEngine;
 import tmge.game.base.Player;
 import tmge.game.tiles.TiledBoard;
+import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 
 public class ColumnsEngine extends FallingEngine<Color> {
@@ -39,6 +42,14 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean tick() {
+		if( !gravity() && !match() ) {
+			spawn();
+		}
+		return false;
+	}
 	
 	@Override
 	protected CoordinateGroup getFalling() {
@@ -47,9 +58,43 @@ public class ColumnsEngine extends FallingEngine<Color> {
 
 	@Override
 	protected boolean match() {
+		CoordinateGroup matched = new CoordinateGroup();
 		
-		spawn();
-		return false;
+		for( CoordinateGroup group : state.getGroups(new Coordinate(0,1)) ) {
+			if( group.size() >= 3 ) {
+				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
+				if( state.get(groupList.get(0)) != state.getDefault() ) {
+					matched.addAll(group);
+				}
+			}
+		}
+		
+		for( CoordinateGroup group : state.getGroups(new Coordinate(1,0)) ) {
+			if( group.size() >= 3 ) {
+				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
+				if( state.get(groupList.get(0)) != state.getDefault() ) {
+					matched.addAll(group);
+				}
+			}
+		}
+		
+		for( CoordinateGroup group : state.getGroups(new Coordinate(1,1)) ) {
+			if( group.size() >= 3 ) {
+				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
+				if( state.get(groupList.get(0)) != state.getDefault() ) {
+					matched.addAll(group);
+				}
+			}
+		}
+		
+		List<Coordinate> matchList = new ArrayList<Coordinate>(matched);
+		for( int f=0; f<matchList.size(); f++ ) {
+			Coordinate coord = matchList.get(f);
+			state.remove(coord);
+			score += f;
+		}
+				
+		return matched.size() > 0;
 	}
 
 }

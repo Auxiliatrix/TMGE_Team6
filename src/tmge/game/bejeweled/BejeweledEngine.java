@@ -62,53 +62,22 @@ public class BejeweledEngine extends FallingEngine<Color> {
 	@Override
 	protected boolean match() {
 		CoordinateGroup matched = new CoordinateGroup();
-		for( int f=0; f<state.getHeight(); f++ ) {
-			Color currentColor = null;
-			CoordinateGroup currentGroup = new CoordinateGroup();
-			
-			for( int g=0; g<state.getWidth(); g++ ) {
-				Coordinate coord = new Coordinate(f, g);
-				if( state.inBounds(new Coordinate(f, g)) ) {
-					Color color = state.get(coord);
-					if( color == currentColor ) {
-						currentGroup.add(coord);
-					} else {
-						if( currentColor != null && currentGroup.size() >= 3 ) {
-							matched.addAll(currentGroup);
-						}
-						currentGroup.clear();
-						currentGroup.add(coord);
-						currentColor = color;
-					}
+		
+		for( CoordinateGroup group : state.getGroups(new Coordinate(0,1)) ) {
+			if( group.size() >= 3 ) {
+				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
+				if( state.get(groupList.get(0)) != state.getDefault() ) {
+					matched.addAll(group);
 				}
-			}
-			if( currentColor != null && currentGroup.size() >= 3 ) {
-				matched.addAll(currentGroup);
 			}
 		}
 		
-		for( int g=0; g<state.getWidth(); g++ ) {
-			Color currentColor = null;
-			CoordinateGroup currentGroup = new CoordinateGroup();
-			
-			for( int f=0; f<state.getHeight(); f++ ) {
-				Coordinate coord = new Coordinate(f, g);
-				if( state.inBounds(new Coordinate(f, g)) ) {
-					Color color = state.get(coord);
-					if( color == currentColor ) {
-						currentGroup.add(coord);
-					} else {
-						if( currentColor != null && currentGroup.size() >= 3 ) {
-							matched.addAll(currentGroup);
-						}
-						currentGroup.clear();
-						currentGroup.add(coord);
-						currentColor = color;
-					}
+		for( CoordinateGroup group : state.getGroups(new Coordinate(1,0)) ) {
+			if( group.size() >= 3 ) {
+				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
+				if( state.get(groupList.get(0)) != state.getDefault() ) {
+					matched.addAll(group);
 				}
-			}
-			if( currentColor != null && currentGroup.size() >= 3 ) {
-				matched.addAll(currentGroup);
 			}
 		}
 		
@@ -118,7 +87,8 @@ public class BejeweledEngine extends FallingEngine<Color> {
 			state.remove(coord);
 			score += f;
 		}
-		return false;
+		
+		return matched.size() > 0;
 	}
 	
 }
