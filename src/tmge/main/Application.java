@@ -9,7 +9,7 @@ import tmge.ui.UserInterface;
 public class Application {
 
 	public static final void main(String[] args) {
-		Board board = new TiledBoard(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
+		Board board = new TiledBoard<Color>(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
 		UserInterface ui = new UserInterface(board);
 		GameEngine ge = new GameEngine(board, Player.createNew(Constants.DEFAULT_USER));
 		// TODO: Set ge to implementation

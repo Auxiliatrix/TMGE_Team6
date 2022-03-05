@@ -1,23 +1,17 @@
 package tmge.ui;
 
-import tmge.game.base.Board;
+import java.awt.Color;
+
 import tmge.game.base.TiledBoard;
-import tmge.main.Constants;
-
-import java.awt.*;
-import javax.swing.*;
-
-import static tmge.main.Constants.UI_HEIGHT;
-import static tmge.main.Constants.UI_WIDTH;
 
 /**
  * UI for display and control
  */
-public class UserInterface {
+public abstract class UserInterface {
 
-	protected Board board;
+	protected TiledBoard<Color> board;
 	protected Grid grid;
-	public UserInterface(Board board) {
+	public UserInterface(TiledBoard<Color> board) {
 		this.board = board;
 		initialize();
 	}
@@ -25,11 +19,7 @@ public class UserInterface {
 	/**
 	 * Initialize and open display window
 	 */
-	public void initialize()
-	{
-		grid = new Grid();
-
-	}
+	public abstract void initialize();
 	
 	/**
 	 * Update display window with board state
@@ -37,16 +27,7 @@ public class UserInterface {
 	public void display()
 	{
 		//System.out.println("updating UI");
-		grid.update((TiledBoard)board);
+		grid.update(board);
 	}
-
-	/**
-	 * API made for game engine, to (un)select a tile.
-	 */
-	public void select(int row, int col)
-	{
-		grid.select(row, col);
-	}
-
 	
 }
