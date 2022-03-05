@@ -118,7 +118,7 @@ public abstract class TiledBoard<E> extends Board {
 		traversed.add(origin);
 		
 		for( Coordinate neighbor : getNeighbors(origin) ) {
-			if( inBounds(neighbor) && !traversed.contains(neighbor) ) {
+			if( inBounds(neighbor) && !traversed.contains(neighbor) && get(origin).equals(get(neighbor)) ) {
 				group.addAll(getGroup(neighbor, traversed));
 			}
 		}
@@ -143,7 +143,7 @@ public abstract class TiledBoard<E> extends Board {
 		traversed.add(origin);
 		
 		for( Coordinate neighbor : getCardinalNeighbors(origin) ) {
-			if( inBounds(neighbor) && !traversed.contains(neighbor) ) {
+			if( inBounds(neighbor) && !traversed.contains(neighbor) && get(origin).equals(get(neighbor))) {
 				group.addAll(getCardinalGroup(neighbor, traversed));
 			}
 		}
@@ -196,9 +196,10 @@ public abstract class TiledBoard<E> extends Board {
 				} else {
 					if( currentTile != null && group.size() > 0 ) {
 						groups.add((CoordinateGroup) group.clone());
-						group.clear();
-						currentTile = tile;
 					}
+					group.clear();
+					currentTile = tile;
+					group.add(coord);
 				}
 				coord = coord.plus(vector);
 			}
