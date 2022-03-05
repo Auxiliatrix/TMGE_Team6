@@ -18,7 +18,7 @@ public abstract class FallingEngine<E> extends GameEngine {
 		if( !gravity() ) {
 			match();
 		}
-		return false;
+		return true;
 	}
 	
 	protected boolean gravity() {
