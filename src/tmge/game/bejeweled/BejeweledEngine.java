@@ -32,6 +32,9 @@ public class BejeweledEngine extends FallingEngine<Color> {
 	public void trySwap(Coordinate a, Coordinate b) {
 		if( state.canSwap(a, b) ) {
 			state.swap(a, b);
+			if( getMatches().size() == 0 ) {
+				state.swap(a, b);
+			}
 		}
 	}
 	
