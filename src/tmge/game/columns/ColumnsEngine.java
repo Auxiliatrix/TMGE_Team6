@@ -2,6 +2,7 @@ package tmge.game.columns;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import tmge.game.base.FallingEngine;
@@ -56,6 +57,42 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		return true;
 	}
 
+	public void cycle(boolean direction) {
+		List<Coordinate> group = new ArrayList<Coordinate>(piece);
+		group.sort(new Comparator<Coordinate>() {
+			@Override
+			public int compare(Coordinate o1, Coordinate o2) {
+				return o1.y - o2.y;
+			}
+		});
+		if( direction ) {
+			Color first = state.get(group.get(0));
+			for( int f=0; f<group.size()-1; f++ ) {
+				state.put(group.get(f), state.get(group.get(f+1)));
+			}
+			state.put(group.get(group.size()-1), first);
+		} else {
+			Color last = state.get(group.get(group.size()-1));
+			for( int f=group.size(); f>=1; f-- ) {
+				state.put(group.get(f), state.get(group.get(f-1)));
+			}
+			state.put(group.get(0), last);
+		}
+	}
+	
+	public boolean movePiece(Coordinate vector) {
+		if( state.canShiftSelected(piece, vector) ) {
+			state.shiftSelected(piece, vector);
+			CoordinateGroup newPiece = new CoordinateGroup();
+			for( Coordinate piecePiece : piece ) {
+				newPiece.add(piecePiece.plus(vector));
+			}
+			piece = newPiece;
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean tick() {
 		return gravity() || match() || spawn();
@@ -106,6 +143,15 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		}
 		
 		for( CoordinateGroup group : state.getGroups(new Coordinate(1,1)) ) {
+			if( group.size() >= 3 ) {
+				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
+				if( state.get(groupList.get(0)) != state.getDefault() ) {
+					matched.addAll(group);
+				}
+			}
+		}
+		
+		for( CoordinateGroup group : state.getGroups(new Coordinate(-1,-1)) ) {
 			if( group.size() >= 3 ) {
 				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
 				if( state.get(groupList.get(0)) != state.getDefault() ) {

@@ -15,7 +15,7 @@ public class ColumnsApp {
 		UserInterface ui = new UserInterface(board, grid);
 		while( engine.tick() ) {
 			ui.display();
-			Thread.sleep(100);
+			Thread.sleep(250);
 		}
 	}
 	

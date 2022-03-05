@@ -21,8 +21,23 @@ public class ColumnsGrid extends Grid {
 
 	@Override
 	public void onPress(KeyEvent key) {
-		// TODO Auto-generated method stub
-		
+		int keyCode = key.getKeyCode();
+		switch(keyCode) {
+			case KeyEvent.VK_UP:
+				engine.cycle(true);
+				break;
+			case KeyEvent.VK_LEFT:
+				engine.movePiece(new Coordinate(0,-1));
+				break;
+			case KeyEvent.VK_RIGHT:
+				engine.movePiece(new Coordinate(0,1));
+				break;
+			case KeyEvent.VK_DOWN:
+				engine.movePiece(new Coordinate(1,0));
+				break;
+			default:
+				break;
+		}
 	}
 	
 }
