@@ -7,19 +7,13 @@ import tmge.game.base.TiledBoard;
 /**
  * UI for display and control
  */
-public abstract class UserInterface {
+public class UserInterface {
 
 	protected TiledBoard<Color> board;
 	protected Grid grid;
-	public UserInterface(TiledBoard<Color> board) {
+	public UserInterface(TiledBoard<Color> board, Grid grid) {
 		this.board = board;
-		initialize();
 	}
-	
-	/**
-	 * Initialize and open display window
-	 */
-	public abstract void initialize();
 	
 	/**
 	 * Update display window with board state
