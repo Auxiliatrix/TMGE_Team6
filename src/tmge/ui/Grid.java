@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,7 +30,13 @@ public abstract class Grid {
     
     public void initialize(){
         frame = new JFrame("TMGE");
-        frame.addKeyListener(new TMGEKeyListener()); // enables key inputs
+        frame.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyPressed(KeyEvent e)
+            {
+        		onPress(e);
+            }
+        }); // enables key inputs
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setContentPane(new GridPane());
@@ -97,7 +105,7 @@ public abstract class Grid {
     
     public abstract void onSelect(Coordinate coordinate);
     
-    public abstract void onPress(String key);
+    public abstract void onPress(KeyEvent key);
 
 }
     
