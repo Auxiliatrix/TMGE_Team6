@@ -18,7 +18,7 @@ public class Application {
 		UserInterface ui = new BejeweledUI(board, grid);
 		while( engine.tick() ) {
 			ui.display();
-			(new Scanner(System.in)).nextLine();
+			Thread.sleep(100);
 		}
 	}
 	
