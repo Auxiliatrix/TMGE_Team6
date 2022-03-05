@@ -34,7 +34,6 @@ public class BejeweledEngine extends FallingEngine<Color> {
 		return COLORSET[selection];
 	}
 	
-	@Override
 	protected boolean spawn() {
 		CoordinateGroup selected = state.getAll().getAll(c -> c.y == 0 && state.get(c) == state.getDefault());
 		if( selected.size() > 0 ) {
@@ -49,6 +48,15 @@ public class BejeweledEngine extends FallingEngine<Color> {
 	@Override
 	protected CoordinateGroup getFalling() {
 		return state.getAll();
+	}
+	
+	@Override
+	protected boolean gravity() {
+		boolean result = super.gravity();
+		if( result ) {
+			spawn();
+		}
+		return result;
 	}
 	
 	@Override

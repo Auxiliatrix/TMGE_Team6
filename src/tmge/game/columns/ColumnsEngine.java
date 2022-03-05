@@ -22,31 +22,33 @@ public class ColumnsEngine extends FallingEngine<Color> {
 	
 	protected Player player;
 	
+	protected CoordinateGroup piece;
+	
 	public ColumnsEngine(TiledBoard<Color> initialState, Player player) {
 		super(initialState);
 		this.player = player;
+		piece = new CoordinateGroup();
 	}
 
 	public static Color getRandomValidColor() {
 		int selection = (int) (Math.random() * COLORSET.length);
 		return COLORSET[selection];
 	}
-	
-	@Override
-	protected CoordinateGroup getFalling() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
 	protected boolean spawn() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	protected CoordinateGroup getFalling() {
+		return state.getAll();
+	}
 
 	@Override
 	protected boolean match() {
-		// TODO Auto-generated method stub
+		
+		spawn();
 		return false;
 	}
 

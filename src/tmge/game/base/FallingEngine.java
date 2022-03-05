@@ -16,9 +16,7 @@ public abstract class FallingEngine<E> extends GameEngine {
 
 	@Override
 	public boolean tick() {
-		if( gravity() ) {
-			spawn();
-		} else {
+		if( !gravity() ) {
 			match();
 		}
 		return false;
@@ -44,8 +42,6 @@ public abstract class FallingEngine<E> extends GameEngine {
 	}
 	
 	protected abstract CoordinateGroup getFalling();
-	
-	protected abstract boolean spawn();
-	
+		
 	protected abstract boolean match();
 }
