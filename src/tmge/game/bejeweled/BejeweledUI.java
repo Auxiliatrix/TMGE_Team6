@@ -9,10 +9,8 @@ public class BejeweledUI extends UserInterface {
 
 	protected BejeweledEngine engine;
 	
-	public BejeweledUI(TiledBoard<Color> board, BejeweledEngine engine) {
-		super(board);
-		this.engine = engine;
-		grid = new BejeweledGrid(board.height, board.width, engine);
+	public BejeweledUI(TiledBoard<Color> board, BejeweledGrid grid) {
+		super(board, grid);
 	}
 
 }
