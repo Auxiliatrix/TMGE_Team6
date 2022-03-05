@@ -1,5 +1,4 @@
 package tmge.ui;
-import tmge.game.tiles.TiledBoard;
 import tmge.main.Constants;
 
 import java.awt.*;
@@ -9,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import tmge.game.base.Board;
+
+import tmge.game.base.TiledBoard;
 
 
 public class Grid{

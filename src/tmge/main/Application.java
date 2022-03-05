@@ -3,7 +3,7 @@ package tmge.main;
 import tmge.game.base.Board;
 import tmge.game.base.GameEngine;
 import tmge.game.base.Player;
-import tmge.game.tiles.TiledBoard;
+import tmge.game.base.TiledBoard;
 import tmge.ui.UserInterface;
 
 public class Application {

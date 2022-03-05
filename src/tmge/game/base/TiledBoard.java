@@ -1,9 +1,8 @@
-package tmge.game.tiles;
+package tmge.game.base;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import tmge.game.base.Board;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 
@@ -57,7 +56,7 @@ public abstract class TiledBoard<E> extends Board {
 	}
 	
 	public synchronized boolean occupied(Coordinate location) {
-		return tiles[location.y][location.x] != NullTile.getInstance();
+		return tiles[location.y][location.x] != defaultTile;
 	}
 	
 	@Override

@@ -1,7 +1,11 @@
 package tmge.ui;
 
 import tmge.game.base.Board;
-import tmge.game.tiles.TiledBoard;
+import tmge.game.base.TiledBoard;
+import tmge.main.Constants;
+
+import java.awt.*;
+import javax.swing.*;
 
 
 /**
