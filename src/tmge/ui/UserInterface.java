@@ -13,6 +13,7 @@ public class UserInterface {
 	protected Grid grid;
 	public UserInterface(TiledBoard<Color> board, Grid grid) {
 		this.board = board;
+		this.grid = grid;
 	}
 	
 	/**
