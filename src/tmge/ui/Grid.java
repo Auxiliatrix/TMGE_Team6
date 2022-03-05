@@ -36,6 +36,13 @@ public abstract class Grid {
         frame.setVisible(true);
     }
     
+    public boolean select(Coordinate coordinate) {
+    	int index = width*coordinate.x + coordinate.y;
+    	SelectablePane sp = (SelectablePane) frame.getContentPane().getComponent(index);
+    	sp.select();
+    	return sp.isSelected();
+    }
+    
     /**
      * repaint the tiledboard.
      * @param board TiledBoard contains tiles information
