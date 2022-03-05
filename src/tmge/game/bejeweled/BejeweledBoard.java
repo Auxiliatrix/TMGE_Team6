@@ -3,6 +3,7 @@ package tmge.game.bejeweled;
 import java.awt.Color;
 
 import tmge.game.tiles.TiledBoard;
+import util.tokens.Coordinate;
 
 /**
  * Implementation of TiledBoard that uses Color as tiles.
@@ -24,4 +25,9 @@ public class BejeweledBoard extends TiledBoard<Color> {
 		}
 	}
 
+	@Override
+	public synchronized boolean canSwap(Coordinate location1, Coordinate location2) {
+		return inBounds(location1) && inBounds(location2) && (Math.abs(location1.minus(location2).y) + Math.abs(location1.minus(location2).x)) == 1;
+	}
+	
 }

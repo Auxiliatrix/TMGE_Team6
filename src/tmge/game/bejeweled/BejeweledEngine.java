@@ -1,15 +1,17 @@
 package tmge.game.bejeweled;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
-import tmge.game.base.GameEngine;
+import tmge.game.base.FallingEngine;
 import tmge.game.base.Player;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 
-public class BejeweledEngine extends GameEngine {
+public class BejeweledEngine extends FallingEngine<Color> {
 
-	public static final Coordinate GRAVITY_VECTOR = new Coordinate(1,0);
+	public static final int GROUP_MIN = 3;
 	public static final Color[] COLORSET = new Color[] {
 		Color.RED,
 		Color.ORANGE,
@@ -20,45 +22,19 @@ public class BejeweledEngine extends GameEngine {
 		Color.WHITE
 	};
 	
-	protected BejeweledBoard state;
 	protected Player player;
 	
 	public BejeweledEngine(BejeweledBoard initialState, Player player) {
-		super();
-		this.state = initialState;
+		super(initialState);
 		this.player = player;
 	}
-
+	
+	public static Color getRandomValidColor() {
+		int selection = (int) (Math.random() * COLORSET.length);
+		return COLORSET[selection];
+	}
+	
 	@Override
-	public boolean tick() {
-		if( gravity() ) {
-			spawn();
-		} else {
-			score();
-		}
-		
-		return false;
-	}
-	
-	protected boolean gravity() {
-		CoordinateGroup selected = new CoordinateGroup();
-		for( int f=state.getHeight()-1; f>=0; f-- ) {
-			final int y = f;
-			selected.addAll(
-					state.getAll().getAll(c -> c.y == y).getAll(c -> {
-						Coordinate target = c.plus(GRAVITY_VECTOR);
-						return state.inBounds(target) && (state.get(target) == state.getDefault() || selected.contains(target));
-					})
-				);
-		}
-		
-		if( selected.size() > 0 ) {
-			state.shiftSelected(selected, GRAVITY_VECTOR);
-			return true;
-		}
-		return false;
-	}
-	
 	protected boolean spawn() {
 		CoordinateGroup selected = state.getAll().getAll(c -> c.y == 0 && state.get(c) == state.getDefault());
 		if( selected.size() > 0 ) {
@@ -70,14 +46,71 @@ public class BejeweledEngine extends GameEngine {
 		return false;
 	}
 	
-	protected boolean score() {
-		// TODO: implement scoring
+	@Override
+	protected CoordinateGroup getFalling() {
+		return state.getAll();
+	}
+	
+	@Override
+	protected boolean match() {
+		CoordinateGroup matched = new CoordinateGroup();
+		for( int f=0; f<state.getHeight(); f++ ) {
+			Color currentColor = null;
+			CoordinateGroup currentGroup = new CoordinateGroup();
+			
+			for( int g=0; g<state.getWidth(); g++ ) {
+				Coordinate coord = new Coordinate(f, g);
+				if( state.inBounds(new Coordinate(f, g)) ) {
+					Color color = state.get(coord);
+					if( color == currentColor ) {
+						currentGroup.add(coord);
+					} else {
+						if( currentColor != null && currentGroup.size() >= 3 ) {
+							matched.addAll(currentGroup);
+						}
+						currentGroup.clear();
+						currentGroup.add(coord);
+						currentColor = color;
+					}
+				}
+			}
+			if( currentColor != null && currentGroup.size() >= 3 ) {
+				matched.addAll(currentGroup);
+			}
+		}
+		
+		for( int g=0; g<state.getWidth(); g++ ) {
+			Color currentColor = null;
+			CoordinateGroup currentGroup = new CoordinateGroup();
+			
+			for( int f=0; f<state.getHeight(); f++ ) {
+				Coordinate coord = new Coordinate(f, g);
+				if( state.inBounds(new Coordinate(f, g)) ) {
+					Color color = state.get(coord);
+					if( color == currentColor ) {
+						currentGroup.add(coord);
+					} else {
+						if( currentColor != null && currentGroup.size() >= 3 ) {
+							matched.addAll(currentGroup);
+						}
+						currentGroup.clear();
+						currentGroup.add(coord);
+						currentColor = color;
+					}
+				}
+			}
+			if( currentColor != null && currentGroup.size() >= 3 ) {
+				matched.addAll(currentGroup);
+			}
+		}
+		
+		List<Coordinate> matchList = new ArrayList<Coordinate>(matched);
+		for( int f=0; f<matchList.size(); f++ ) {
+			Coordinate coord = matchList.get(f);
+			state.remove(coord);
+			score += f;
+		}
 		return false;
 	}
 	
-	public static Color getRandomValidColor() {
-		int selection = (int) (Math.random() * COLORSET.length);
-		return COLORSET[selection];
-	}
-
 }
