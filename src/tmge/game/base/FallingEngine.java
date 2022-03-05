@@ -21,7 +21,7 @@ public abstract class FallingEngine<E> extends GameEngine {
 		return true;
 	}
 	
-	protected boolean gravity() {
+	protected CoordinateGroup unstable() {
 		CoordinateGroup selected = new CoordinateGroup();
 		for( int f=state.getHeight()-1; f>=0; f-- ) {
 			final int y = f;
@@ -32,6 +32,11 @@ public abstract class FallingEngine<E> extends GameEngine {
 					})
 				);
 		}
+		return selected;
+	}
+	
+	protected boolean gravity() {
+		CoordinateGroup selected = unstable();
 		
 		if( selected.size() > 0 ) {
 			state.shiftSelected(selected, GRAVITY_VECTOR);
