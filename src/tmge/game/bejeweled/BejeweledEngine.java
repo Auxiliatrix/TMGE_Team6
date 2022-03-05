@@ -90,15 +90,6 @@ public class BejeweledEngine extends FallingEngine<Color> {
 			}
 		}
 		
-		for( CoordinateGroup group : state.getGroups() ) {
-			if( group.size() >= 3 ) {
-				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
-				if( state.get(groupList.get(0)) != state.getDefault() ) {
-					matched.addAll(group);
-				}
-			}
-		}
-		
 		return matched;
 	}
 	
