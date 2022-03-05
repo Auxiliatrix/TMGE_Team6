@@ -12,6 +12,7 @@ import util.tokens.CoordinateGroup;
 
 public class ColumnsEngine extends FallingEngine<Color> {
 
+	public static final int COLUMN_HEIGHT = 3;
 	public static final int GROUP_MIN = 4;
 	public static final Color[] COLORSET = new Color[] {
 		Color.RED,
@@ -39,21 +40,27 @@ public class ColumnsEngine extends FallingEngine<Color> {
 	}
 
 	protected boolean spawn() {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("spawning");
+		int middleX = state.width / 2;
+		for( int f=0; f<COLUMN_HEIGHT; f++ ) {
+			if( state.occupied(new Coordinate(f, middleX)) ) {
+				return false;
+			}
+		}
+		for( int f=0; f<COLUMN_HEIGHT; f++ ) {
+			state.put(new Coordinate(f, middleX), getRandomValidColor());
+		}
+		return true;
 	}
 
 	@Override
 	public boolean tick() {
-		if( !gravity() && !match() ) {
-			spawn();
-		}
-		return false;
+		return gravity() || match() || spawn();
 	}
 	
 	@Override
 	protected CoordinateGroup getFalling() {
-		return state.getAll();
+		return state.getAll().getAll(c -> state.occupied(c));
 	}
 
 	@Override
@@ -100,7 +107,7 @@ public class ColumnsEngine extends FallingEngine<Color> {
 			state.remove(coord);
 			score += f;
 		}
-				
+		
 		return matched.size() > 0;
 	}
 
