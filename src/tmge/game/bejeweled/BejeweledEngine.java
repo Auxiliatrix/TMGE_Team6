@@ -66,7 +66,7 @@ public class BejeweledEngine extends FallingEngine<Color> {
 	}
 	
 	@Override
-	protected boolean match() {
+	protected CoordinateGroup getMatches() {
 		CoordinateGroup matched = new CoordinateGroup();
 		
 		for( CoordinateGroup group : state.getGroups(new Coordinate(0,1)) ) {
@@ -86,6 +86,13 @@ public class BejeweledEngine extends FallingEngine<Color> {
 				}
 			}
 		}
+		
+		return matched;
+	}
+	
+	@Override
+	protected boolean match() {
+		CoordinateGroup matched = getMatches();
 		
 		List<Coordinate> matchList = new ArrayList<Coordinate>(matched);
 		for( int f=0; f<matchList.size(); f++ ) {

@@ -43,4 +43,6 @@ public abstract class FallingEngine<E> extends GameEngine {
 	protected abstract CoordinateGroup getFalling();
 		
 	protected abstract boolean match();
+	
+	protected abstract CoordinateGroup getMatches();
 }
