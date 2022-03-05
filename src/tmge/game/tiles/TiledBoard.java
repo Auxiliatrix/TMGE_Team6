@@ -80,6 +80,137 @@ public abstract class TiledBoard<E> extends Board {
 		}
 	}
 
+	public Coordinate[] getCardinalNeighbors(Coordinate origin) {
+		return new Coordinate[] {
+			origin.plus(new Coordinate(-1,0)),
+			origin.plus(new Coordinate(0,-1)),
+			origin.plus(new Coordinate(1,0)),
+			origin.plus(new Coordinate(0,1)),
+		};
+	}
+	
+	public Coordinate[] getNeighbors(Coordinate origin) {
+		return new Coordinate[] {
+			origin.plus(new Coordinate(-1,-1)),
+			origin.plus(new Coordinate(-1,0)),
+			origin.plus(new Coordinate(-1,1)),
+			origin.plus(new Coordinate(0,-1)),
+			origin.plus(new Coordinate(0,1)),
+			origin.plus(new Coordinate(1,-1)),
+			origin.plus(new Coordinate(1,0)),
+			origin.plus(new Coordinate(1,1)),
+		};
+	}
+	
+	public synchronized List<CoordinateGroup> getGroups() {
+		List<CoordinateGroup> groups = new ArrayList<CoordinateGroup>();
+		List<Coordinate> queue = new ArrayList<Coordinate>(getAll());
+		while( !queue.isEmpty() ) {
+			CoordinateGroup group = getGroup(queue.remove(0), new CoordinateGroup());
+			queue.removeAll(group);
+			groups.add(group);
+		}
+		return groups;
+	}
+	
+	protected synchronized CoordinateGroup getGroup(Coordinate origin, CoordinateGroup traversed) {
+		CoordinateGroup group = new CoordinateGroup();
+		group.add(origin);
+		traversed.add(origin);
+		
+		for( Coordinate neighbor : getNeighbors(origin) ) {
+			if( inBounds(neighbor) && !traversed.contains(neighbor) ) {
+				group.addAll(getGroup(neighbor, traversed));
+			}
+		}
+		
+		return group;
+	}
+	
+	public synchronized List<CoordinateGroup> getCardinalGroups() {
+		List<CoordinateGroup> groups = new ArrayList<CoordinateGroup>();
+		List<Coordinate> queue = new ArrayList<Coordinate>(getAll());
+		while( !queue.isEmpty() ) {
+			CoordinateGroup group = getCardinalGroup(queue.remove(0), new CoordinateGroup());
+			queue.removeAll(group);
+			groups.add(group);
+		}
+		return groups;
+	}
+	
+	protected synchronized CoordinateGroup getCardinalGroup(Coordinate origin, CoordinateGroup traversed) {
+		CoordinateGroup group = new CoordinateGroup();
+		group.add(origin);
+		traversed.add(origin);
+		
+		for( Coordinate neighbor : getCardinalNeighbors(origin) ) {
+			if( inBounds(neighbor) && !traversed.contains(neighbor) ) {
+				group.addAll(getCardinalGroup(neighbor, traversed));
+			}
+		}
+		
+		return group;
+	}
+	
+	public synchronized List<CoordinateGroup> getGroups(Coordinate vector) {
+		List<CoordinateGroup> groups = new ArrayList<CoordinateGroup>();
+
+		CoordinateGroup origins = new CoordinateGroup();
+		CoordinateGroup solved = new CoordinateGroup();
+		Coordinate inverseVector = vector.times(new Coordinate(-1,-1));
+		
+		List<Coordinate> queue = new ArrayList<Coordinate>(getAll());
+		while( !queue.isEmpty() ) {
+			Coordinate start = queue.remove(0);
+			if( solved.contains(start) ) {
+				continue;
+			}
+			solved.add(start);
+			
+			Coordinate previous = start;
+			Coordinate target = previous.plus(inverseVector);
+
+			boolean found = true;
+			while( inBounds(target) ) {
+				previous = target;
+				solved.add(previous);
+				target = target.plus(inverseVector);
+				
+				if( solved.contains(target) ) {
+					found = false;
+					break;
+				}
+			}
+			if( found ) {
+				origins.add(previous);
+			}
+		}
+		
+		for( Coordinate origin : origins ) {
+			E currentTile = null;
+			CoordinateGroup group = new CoordinateGroup();
+			Coordinate coord = origin;
+			while( inBounds(coord) ) {
+				E tile = get(coord);
+				if( tile.equals(currentTile) ) {
+					group.add(coord);
+				} else {
+					if( currentTile != null && group.size() > 0 ) {
+						groups.add((CoordinateGroup) group.clone());
+						group.clear();
+						currentTile = tile;
+					}
+				}
+				coord = coord.plus(vector);
+			}
+			if( currentTile != null && group.size() > 0 ) {
+				groups.add((CoordinateGroup) group.clone());
+			}
+		}
+		
+		return groups;
+	}
+	
 	@Override
 	public synchronized boolean remove(Coordinate location) {
 		if( occupied(location) ) {

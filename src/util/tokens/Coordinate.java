@@ -22,6 +22,10 @@ public class Coordinate {
 		return new Coordinate(y - subtrahend.y, x - subtrahend.x);
 	}
 	
+	public Coordinate times(Coordinate factor) {
+		return new Coordinate(y * factor.y, x * factor.x);
+	}
+	
 	@Override
 	public boolean equals(Object c) {
 		if( c instanceof Coordinate ) {
