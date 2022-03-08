@@ -11,22 +11,43 @@ import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 
+/**
+ * Implementation of FallingEngine that uses Color Tiles.
+ * Used for the Color game.
+ */
 public class ColumnsEngine extends FallingEngine<Color> {
 
-	public static final int COLUMN_HEIGHT = 3;
-	public static final int GROUP_MIN = 4;
-	public static final Color[] COLORSET = new Color[] {
-		Color.RED,
-		Color.ORANGE,
-		Color.YELLOW,
-		Color.GREEN,
-		Color.BLUE,
-		Color.MAGENTA,
-		Color.WHITE
-	};
+	/**
+	 * Height of generated columns.
+	 */
+	public int columnHeight = 3;
 	
+	/**
+	 * Minimum group size to cause matching.
+	 */
+	public int groupMin = 3;
+	
+	/**
+	 * Valid Colors to choose from.
+	 */
+	public Color[] colorSet = new Color[] {
+			new Color(255,102,102),
+			new Color(255,204,51),
+			new Color(255,255,153),
+			new Color(0,204,0),
+			new Color(51,153,255),
+			new Color(102,0,153),
+			new Color(204,204,204),
+		};
+	
+	/**
+	 * Player playing the game.
+	 */
 	protected Player player;
 	
+	/**
+	 * Coordinates of Tiles that are in the current "piece" being controlled.
+	 */
 	protected CoordinateGroup piece;
 	
 	public ColumnsEngine(TiledBoard<Color> initialState, Player player) {
@@ -34,22 +55,29 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		this.player = player;
 		piece = new CoordinateGroup();
 	}
-
-	public static Color getRandomValidColor() {
-		int selection = (int) (Math.random() * COLORSET.length);
-		return COLORSET[selection];
+	
+	/**
+	 * Get a random valid color from the pool.
+	 * @return A color
+	 */
+	public Color getRandomValidColor() {
+		int selection = (int) (Math.random() * colorSet.length);
+		return colorSet[selection];
 	}
 
+	/**
+	 * Spawn a new column if possible.
+	 * @return Whether the column was able to spawn
+	 */
 	protected boolean spawn() {
-		System.out.println("spawning");
 		int middleX = state.width / 2;
-		for( int f=0; f<COLUMN_HEIGHT; f++ ) {
+		for( int f=0; f<columnHeight; f++ ) {
 			if( state.occupied(new Coordinate(f, middleX)) ) {
 				return false;
 			}
 		}
 		piece.clear();
-		for( int f=0; f<COLUMN_HEIGHT; f++ ) {
+		for( int f=0; f<columnHeight; f++ ) {
 			Coordinate spawnLocation = new Coordinate(f, middleX);
 			state.put(spawnLocation, getRandomValidColor());
 			piece.add(spawnLocation);
@@ -57,6 +85,10 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		return true;
 	}
 
+	/**
+	 * Cycle the Tiles in the piece being controlled.
+	 * @param direction Whether to cycle the pieces upwards
+	 */
 	public void cycle(boolean direction) {
 		List<Coordinate> group = new ArrayList<Coordinate>(piece);
 		group.sort(new Comparator<Coordinate>() {
@@ -80,6 +112,11 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		}
 	}
 	
+	/**
+	 * Move the piece being controlled by the given vector.
+	 * @param vector Coordinate vector to shift by
+	 * @return Whether the move was executed
+	 */
 	public boolean movePiece(Coordinate vector) {
 		if( state.canShiftSelected(piece, vector) ) {
 			state.shiftSelected(piece, vector);
@@ -120,12 +157,15 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		return state.getAll().getAll(c -> state.occupied(c));
 	}
 
+	/**
+	 * Match all applicable Tiles in a row.
+	 */
 	@Override
 	protected CoordinateGroup getMatches() {
 		CoordinateGroup matched = new CoordinateGroup();
 
 		for( CoordinateGroup group : state.getGroups(new Coordinate(0,1)) ) {
-			if( group.size() >= 3 ) {
+			if( group.size() >= groupMin ) {
 				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
 				if( state.get(groupList.get(0)) != state.getDefault() ) {
 					matched.addAll(group);
@@ -134,7 +174,7 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		}
 		
 		for( CoordinateGroup group : state.getGroups(new Coordinate(1,0)) ) {
-			if( group.size() >= 3 ) {
+			if( group.size() >= groupMin ) {
 				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
 				if( state.get(groupList.get(0)) != state.getDefault() ) {
 					matched.addAll(group);
@@ -143,7 +183,7 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		}
 		
 		for( CoordinateGroup group : state.getGroups(new Coordinate(1,1)) ) {
-			if( group.size() >= 3 ) {
+			if( group.size() >= groupMin ) {
 				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
 				if( state.get(groupList.get(0)) != state.getDefault() ) {
 					matched.addAll(group);
@@ -152,7 +192,7 @@ public class ColumnsEngine extends FallingEngine<Color> {
 		}
 		
 		for( CoordinateGroup group : state.getGroups(new Coordinate(-1,1)) ) {
-			if( group.size() >= 3 ) {
+			if( group.size() >= groupMin ) {
 				List<Coordinate> groupList = new ArrayList<Coordinate>(group);
 				if( state.get(groupList.get(0)) != state.getDefault() ) {
 					matched.addAll(group);

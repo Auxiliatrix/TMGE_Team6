@@ -5,6 +5,10 @@ import java.awt.Color;
 import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 
+/**
+ * Implementation of a Board that uses Color as Tiles.
+ * Used for Columns game.
+ */
 public class ColumnsBoard extends TiledBoard<Color> {
 
 	public ColumnsBoard(int height, int width) {
@@ -21,6 +25,9 @@ public class ColumnsBoard extends TiledBoard<Color> {
 		}
 	}
 	
+	/**
+	 * Disallow shifting into existing Tiles.
+	 */
 	@Override
 	public synchronized boolean canShift(Coordinate location, Coordinate vector) {
 		return super.canShift(location, vector) && get(location.plus(vector)) == defaultTile;

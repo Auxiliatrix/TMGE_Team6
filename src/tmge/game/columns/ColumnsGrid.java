@@ -2,10 +2,13 @@ package tmge.game.columns;
 
 import java.awt.event.KeyEvent;
 
-import tmge.ui.Grid;
+import tmge.ui.ColorInterface;
 import util.tokens.Coordinate;
 
-public class ColumnsGrid extends Grid {
+/**
+ * Implementation of Grid used for Columns game.
+ */
+public class ColumnsGrid extends ColorInterface {
 
 	protected ColumnsEngine engine;
 		

@@ -3,10 +3,20 @@ package tmge.game.base;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 
+/**
+ * An implementation of the GameEngine that includes game logic for games that involve gravity.
+ * @param <E> Type of Tile to be stored in the Board.
+ */
 public abstract class FallingEngine<E> extends GameEngine {
 	
-	public static final Coordinate GRAVITY_VECTOR = new Coordinate(1,0);
+	/**
+	 * Direction that gravity moves Tiles in.
+	 */
+	public Coordinate GRAVITY_VECTOR = new Coordinate(1,0);
 	
+	/**
+	 * State of the Board stored by the Engine.
+	 */
 	protected TiledBoard<E> state;
 	
 	public FallingEngine(TiledBoard<E> initialState) {
@@ -14,6 +24,10 @@ public abstract class FallingEngine<E> extends GameEngine {
 	}
 
 	@Override
+	/**
+	 * Default logic checks if any Tiles fell. If not, it makes matches with the stabilized pieces.
+	 * @return True by default
+	 */
 	public boolean tick() {
 		if( !gravity() ) {
 			match();
@@ -21,6 +35,11 @@ public abstract class FallingEngine<E> extends GameEngine {
 		return true;
 	}
 	
+	/**
+	 * Get all Tiles that will fall this tick.
+	 * By default, this function returns all Tiles that have a blank space beneath them.
+	 * @return CoordinateGroup Group of Coordinates that will fall
+	 */
 	protected CoordinateGroup unstable() {
 		CoordinateGroup selected = new CoordinateGroup();
 		for( int f=state.getHeight()-1; f>=0; f-- ) {
@@ -35,6 +54,10 @@ public abstract class FallingEngine<E> extends GameEngine {
 		return selected;
 	}
 	
+	/**
+	 * Enact gravity on the board.
+	 * @return Whether any tiles were affected
+	 */
 	protected boolean gravity() {
 		CoordinateGroup selected = unstable();
 		
@@ -45,9 +68,21 @@ public abstract class FallingEngine<E> extends GameEngine {
 		return false;
 	}
 	
+	/**
+	 * Get all Tiles that are subject to gravity.
+	 * @return CoordinateGroup Group of Coordinates subject to gravity
+	 */
 	protected abstract CoordinateGroup getFalling();
-		
+	
+	/**
+	 * Remove applicable Tiles.
+	 * @return Whether any tiles were removed
+	 */
 	protected abstract boolean match();
 	
+	/**
+	 * Get all Tiles that are matched.
+	 * @return Whether any Tiles were matched
+	 */
 	protected abstract CoordinateGroup getMatches();
 }

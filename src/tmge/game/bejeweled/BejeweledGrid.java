@@ -2,13 +2,22 @@ package tmge.game.bejeweled;
 
 import java.awt.event.KeyEvent;
 
-import tmge.ui.Grid;
+import tmge.ui.ColorInterface;
 import util.tokens.Coordinate;
 
-public class BejeweledGrid extends Grid {
-	
+/**
+ * Implementation of Grid used for the Bejeweled game.
+ */
+public class BejeweledGrid extends ColorInterface {
+
+	/**
+	 * Contains a BejeweledEngine to track.
+	 */
 	protected BejeweledEngine engine;
 	
+	/**
+	 * Selected Tile on the grid.
+	 */
 	protected Coordinate selection;
 	
 	public BejeweledGrid(int height, int width, BejeweledEngine engine) {
