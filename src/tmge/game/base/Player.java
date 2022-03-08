@@ -75,14 +75,30 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * Get this player's high score for the given game.
+	 * @param game String associated with game being fetched
+	 * @return The high score
+	 */
 	public double getHighScore(String game) {
 		return highScores.get(game);
 	}
 	
+	/**
+	 * Get this player's play count for the given game.
+	 * @param game String associated with game being fetched
+	 * @return The high score
+	 */
 	public double getPlayCount(String game) {
 		return playCounts.get(game);
 	}
 	
+	/**
+	 * Add the given game and score to the Player's records
+	 * @param game String associated with game
+	 * @param score Score for the given play
+	 * @return Whether a new high score was achieved
+	 */
 	public boolean trackPlay(String game, double score) {
 		if( !playCounts.containsKey(game) ) {
 			playCounts.put(game, 1);

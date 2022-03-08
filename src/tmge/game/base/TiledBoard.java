@@ -35,31 +35,61 @@ public abstract class TiledBoard<E> extends Board {
 	 */
 	public abstract void loadNew();
 	
+	/**
+	 * Get the Tile that represents a blank space.
+	 * @return The default Tile for this instance
+	 */
 	public E getDefault() {
 		return defaultTile;
 	}
 	
+	/**
+	 * Get the board height.
+	 * @return The height of the board
+	 */
 	public int getHeight() {
 		return height;
 	}
 	
+	/**
+	 * Get the board width.
+	 * @return The width of the board
+	 */
 	public int getWidth() {
 		return width;
 	}
 	
+	/**
+	 * Get the Tile at the given location
+	 * @param location Coordinate location to retrieve
+	 * @return The Tile at the given location
+	 */
 	public synchronized E get(Coordinate location) {
 		return tiles[location.y][location.x];
 	}
 	
+	/**
+	 * Check whether the given Tile is within this Board's boundaries.
+	 * @param location Coordinate to check
+	 * @return Whether the given location is in bounds
+	 */
 	public synchronized boolean inBounds(Coordinate location) {
 		return location.y >= 0 && location.y < height && location.x >= 0 && location.x < width;
 	}
 	
+	/**
+	 * Check whether the given Tile is occupied.
+	 * @param location Coordinate to check
+	 * @return Whether the given location contains something other than the default Tile
+	 */
 	public synchronized boolean occupied(Coordinate location) {
 		return tiles[location.y][location.x] != defaultTile;
 	}
 	
 	@Override
+	/**
+	 * @return All valid Coordinate locations on this Board
+	 */
 	public synchronized CoordinateGroup getAll() {
 		CoordinateGroup all = new CoordinateGroup();
 		for( int f=0; f<height; f++ ) {
@@ -70,6 +100,12 @@ public abstract class TiledBoard<E> extends Board {
 		return all;
 	}
 	
+	/**
+	 * Put a Tile in the given location.
+	 * @param location Coordinate location to place in
+	 * @param object Tile to place
+	 * @return Whether the operation was successful
+	 */
 	public synchronized boolean put(Coordinate location, E object) {
 		if( inBounds(location) ) {
 			tiles[location.y][location.x] = object;
@@ -79,6 +115,11 @@ public abstract class TiledBoard<E> extends Board {
 		}
 	}
 
+	/**
+	 * Get all Tiles cardinally adjacent to the given location.
+	 * @param origin Coordinate from which to find neighbors
+	 * @return All cardinal neighbors of the given locat ion
+	 */
 	public Coordinate[] getCardinalNeighbors(Coordinate origin) {
 		return new Coordinate[] {
 			origin.plus(new Coordinate(-1,0)),
@@ -88,6 +129,11 @@ public abstract class TiledBoard<E> extends Board {
 		};
 	}
 	
+	/**
+	 * Get all Tiles adjacent to the given location.
+	 * @param origin Coordinate from which to find neighbors
+	 * @return All neighbors of the given locat ion
+	 */
 	public Coordinate[] getNeighbors(Coordinate origin) {
 		return new Coordinate[] {
 			origin.plus(new Coordinate(-1,-1)),
@@ -101,6 +147,10 @@ public abstract class TiledBoard<E> extends Board {
 		};
 	}
 	
+	/**
+	 * Find all Tiles located in consistent groups.
+	 * @return List of CoordinateGroups containing all Coordinates that are grouped by both type and adjacency
+	 */
 	public synchronized List<CoordinateGroup> getGroups() {
 		List<CoordinateGroup> groups = new ArrayList<CoordinateGroup>();
 		List<Coordinate> queue = new ArrayList<Coordinate>(getAll());
@@ -112,6 +162,12 @@ public abstract class TiledBoard<E> extends Board {
 		return groups;
 	}
 	
+	/**
+	 * Find all Tiles grouped with the given Tile
+	 * @param origin Coordinate location to search from
+	 * @param traversed CoordinateGroup of all Tiles already checked
+	 * @return All grouped Tiles
+	 */
 	protected synchronized CoordinateGroup getGroup(Coordinate origin, CoordinateGroup traversed) {
 		CoordinateGroup group = new CoordinateGroup();
 		group.add(origin);
@@ -126,6 +182,10 @@ public abstract class TiledBoard<E> extends Board {
 		return group;
 	}
 	
+	/**
+	 * Find all Tiles located in consistent cardinally adjacent groups.
+	 * @return List of CoordinateGroups containing all Coordinates that are grouped by both type and cardinal adjacency
+	 */
 	public synchronized List<CoordinateGroup> getCardinalGroups() {
 		List<CoordinateGroup> groups = new ArrayList<CoordinateGroup>();
 		List<Coordinate> queue = new ArrayList<Coordinate>(getAll());
@@ -137,6 +197,12 @@ public abstract class TiledBoard<E> extends Board {
 		return groups;
 	}
 	
+	/**
+	 * Find all Tiles cardinally grouped with the given Tile
+	 * @param origin Coordinate location to search from
+	 * @param traversed CoordinateGroup of all Tiles already checked
+	 * @return All cardinally grouped Tiles
+	 */
 	protected synchronized CoordinateGroup getCardinalGroup(Coordinate origin, CoordinateGroup traversed) {
 		CoordinateGroup group = new CoordinateGroup();
 		group.add(origin);
@@ -151,6 +217,11 @@ public abstract class TiledBoard<E> extends Board {
 		return group;
 	}
 	
+	/**
+	 * Get all groups of Tiles that are organized by the pattern specified by the given vector.
+	 * @param vector Coordinate vector representing the required relationship between two tiles to be considered part of the same group
+	 * @return List of CoordinateGroups containing all grouped Tiles
+	 */
 	public synchronized List<CoordinateGroup> getGroups(Coordinate vector) {
 		List<CoordinateGroup> groups = new ArrayList<CoordinateGroup>();
 
@@ -275,7 +346,7 @@ public abstract class TiledBoard<E> extends Board {
 	@Override
 	public synchronized boolean canShiftSelected(CoordinateGroup selected, Coordinate vector) {
 		for( Coordinate coord : selected ) {
-			if( !canShift(coord, vector) ) {
+			if( !canShift(coord, vector) && !selected.contains(coord.plus(vector)) ) {
 				return false;
 			}
 		}
