@@ -14,15 +14,18 @@ import javax.swing.border.MatteBorder;
 import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 
+/**
+ * UserInterface that displays the game as its being played.
+ */
 // structure: frame->gridPanel->spls
-public abstract class Grid {
+public abstract class ColorInterface {
     
 	protected int height;
     protected int width;
     // gridFrame
     protected JFrame frame;
     
-    public Grid(int height, int width) {
+    public ColorInterface(int height, int width) {
     	this.height = height;
     	this.width = width;
         initialize();
@@ -45,6 +48,19 @@ public abstract class Grid {
         frame.setVisible(true);
     }
     
+    /**
+     * Destroy the interface.
+     */
+    public void takedown() {
+    	frame.setVisible(false);
+    	frame.dispose();
+    }
+    
+    /**
+     * Select the Tile at the given Coordinate
+     * @param coordinate Coordinate location to select
+     * @return whether the selection went through
+     */
     public boolean select(Coordinate coordinate) {
     	int index = width*coordinate.y + coordinate.x;
     	SelectablePane sp = (SelectablePane) frame.getContentPane().getComponent(index);
@@ -103,8 +119,16 @@ public abstract class Grid {
         }
     }
     
+    /**
+     * Function to execute when the given Coordinate location is selected.
+     * @param coordinate Coordinate location to select
+     */
     public abstract void onSelect(Coordinate coordinate);
     
+    /**
+     * Function to execute when the given key is pressed.
+     * @param key KeyEvent that was executed
+     */
     public abstract void onPress(KeyEvent key);
 
 }
