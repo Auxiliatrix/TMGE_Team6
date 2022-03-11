@@ -27,16 +27,33 @@ public abstract class FallingEngine<E> extends GameEngine implements WindowClose
 		kill = false;
 	}
 
-	@Override
 	/**
 	 * Default logic checks if any Tiles fell. If not, it makes matches with the stabilized pieces.
 	 * @return True by default
 	 */
-	public boolean tick() {
+	protected boolean update() {
 		if( !gravity() ) {
 			match();
 		}
-		return !kill;
+		return true;
+	}
+	
+	/**
+	 * Run final operations before closing the game.
+	 */
+	protected abstract void close();
+	
+	@Override
+	/**
+	 * Run logic to determine whether game should stop. If it should, run closing operations.
+	 * @return Whether the game should continue.
+	 */
+	public final boolean tick() {
+		if( kill || !update() ) {
+			close();
+			return false;
+		}
+		return true;
 	}
 	
 	/**

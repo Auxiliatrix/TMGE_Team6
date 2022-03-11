@@ -17,6 +17,8 @@ import util.tokens.CoordinateGroup;
  */
 public class ColumnsEngine extends FallingEngine<Color> {
 
+	public static final String GAME_NAME = "COLUMNS";
+	
 	/**
 	 * Height of generated columns.
 	 */
@@ -131,8 +133,13 @@ public class ColumnsEngine extends FallingEngine<Color> {
 	}
 	
 	@Override
-	public boolean tick() {
-		return gravity() || match() || spawn();
+	public boolean update() {
+		return (gravity() || match() || spawn());
+	}
+	
+	@Override
+	public void close() {
+		player.trackPlay(GAME_NAME, score);
 	}
 	
 	@Override

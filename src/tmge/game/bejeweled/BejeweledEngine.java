@@ -15,6 +15,8 @@ import util.tokens.CoordinateGroup;
  */
 public class BejeweledEngine extends FallingEngine<Color> {
 
+	public static final String GAME_NAME = "BEJEWELED";
+	
 	/**
 	 * Minimum number of Tiles required for a group.
 	 */
@@ -41,6 +43,11 @@ public class BejeweledEngine extends FallingEngine<Color> {
 	public BejeweledEngine(BejeweledBoard initialState, Player player) {
 		super(initialState);
 		this.player = player;
+	}
+	
+	@Override
+	public void close() {
+		player.trackPlay(GAME_NAME, score);
 	}
 	
 	/**

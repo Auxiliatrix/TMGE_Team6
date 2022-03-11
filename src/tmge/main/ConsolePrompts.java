@@ -61,13 +61,10 @@ public class ConsolePrompts {
 	public static void gamePrompt(String playerName) throws InterruptedException {
 		Player currentPlayer;
 		if (playerName.equals("guest")) {
-			currentPlayer = Player.createNew(Constants.DEFAULT_USER);
+			currentPlayer = Player.getOrCreate(Constants.DEFAULT_USER);
 			System.out.println("Playing as guest.");
 		} else {
-			currentPlayer = Player.createNew(playerName);
-			if (currentPlayer == null) {
-				currentPlayer = Player.getPlayer(playerName);
-			}
+			currentPlayer = Player.getOrCreate(playerName);
 			System.out.println("Logging in as user: " + currentPlayer.getUsername() + ".");
 		}
 		String userInput = "";
@@ -92,7 +89,7 @@ public class ConsolePrompts {
 			case "2":
 			case "(2)":
 				ColumnsBoard columnsBoard = new ColumnsBoard(Constants.BOARD_HEIGHT, Constants.BOARD_WIDTH);
-				ColumnsEngine columnsEngine = new ColumnsEngine(columnsBoard, Player.createNew(Constants.DEFAULT_USER));
+				ColumnsEngine columnsEngine = new ColumnsEngine(columnsBoard, currentPlayer);
 				ColumnsGrid columnsGrid = new ColumnsGrid(columnsBoard.height, columnsBoard.width, columnsEngine);
 				while (columnsEngine.tick()) {
 					columnsGrid.update(columnsBoard, columnsEngine.score);
