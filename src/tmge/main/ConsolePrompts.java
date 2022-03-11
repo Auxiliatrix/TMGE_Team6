@@ -82,7 +82,7 @@ public class ConsolePrompts {
 				BejeweledGrid bejeweledGrid = new BejeweledGrid(bejeweledBoard.height, bejeweledBoard.width,
 						bejeweledEngine);
 				while (bejeweledEngine.tick()) {
-					bejeweledGrid.update(bejeweledBoard);
+					bejeweledGrid.update(bejeweledBoard, bejeweledEngine.score);
 					Thread.sleep(100);
 				}
 				bejeweledGrid.takedown();
@@ -95,7 +95,7 @@ public class ConsolePrompts {
 				ColumnsEngine columnsEngine = new ColumnsEngine(columnsBoard, Player.createNew(Constants.DEFAULT_USER));
 				ColumnsGrid columnsGrid = new ColumnsGrid(columnsBoard.height, columnsBoard.width, columnsEngine);
 				while (columnsEngine.tick()) {
-					columnsGrid.update(columnsBoard);
+					columnsGrid.update(columnsBoard, columnsEngine.score);
 					Thread.sleep(250);
 				}
 				columnsGrid.takedown();

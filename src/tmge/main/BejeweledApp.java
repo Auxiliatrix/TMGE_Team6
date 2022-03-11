@@ -12,7 +12,7 @@ public class BejeweledApp {
 		BejeweledEngine engine = new BejeweledEngine(board, Player.createNew(Constants.DEFAULT_USER));
 		BejeweledGrid grid = new BejeweledGrid(board.height, board.width, engine);
 		while( engine.tick() ) {
-			grid.update(board);
+			grid.update(board, engine.score);
 			Thread.sleep(100);
 		}
 		grid.takedown();

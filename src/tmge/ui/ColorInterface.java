@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -18,6 +20,8 @@ import util.tokens.Coordinate;
  */
 // structure: frame->gridPanel->spls
 public abstract class ColorInterface {
+
+    protected double score;
     
 	protected int height;
     protected int width;
@@ -30,7 +34,7 @@ public abstract class ColorInterface {
         initialize();
     }
     
-    public void initialize(){
+    public void initialize() {
         frame = new JFrame("TMGE");
         frame.addKeyListener(new KeyAdapter() {
         	@Override
@@ -42,6 +46,9 @@ public abstract class ColorInterface {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setContentPane(new GridPane());
+        // testing scoring ui pane
+        frame.setJMenuBar( new MenuPane()  );
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -72,7 +79,7 @@ public abstract class ColorInterface {
      * @param board TiledBoard contains tiles information
      * @return
      */
-    public void update(TiledBoard<Color> board){
+    public void update(TiledBoard<Color> board, double s){
         for(int i=0; i<board.height; i++)
         {
             for(int j=0; j<board.width; j++)
@@ -82,6 +89,8 @@ public abstract class ColorInterface {
                 tp.setBackground(board.get(new Coordinate(i,j)));
             }
         }
+        score = s;
+        frame.getJMenuBar().getMenu(0).setText("Current Score: " + score);
     }
 
     @SuppressWarnings("serial")
@@ -115,6 +124,16 @@ public abstract class ColorInterface {
                     add(sp, gbc);
                 }
             }
+        }
+    }
+    
+    
+    @SuppressWarnings("serial")
+	public class MenuPane extends JMenuBar {
+
+        public MenuPane() {
+            JMenu testMenu = new JMenu("Testing Score: " + score);
+            add(testMenu);
         }
     }
     

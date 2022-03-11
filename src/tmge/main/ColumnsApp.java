@@ -12,7 +12,7 @@ public class ColumnsApp {
 		ColumnsEngine engine = new ColumnsEngine(board, Player.createNew(Constants.DEFAULT_USER));
 		ColumnsGrid grid = new ColumnsGrid(board.height, board.width, engine);
 		while( engine.tick() ) {
-			grid.update(board);
+			grid.update(board, engine.score);
 			Thread.sleep(250);
 		}
 		grid.takedown();
