@@ -21,7 +21,7 @@ public class BejeweledGrid extends ColorInterface {
 	protected Coordinate selection;
 	
 	public BejeweledGrid(int height, int width, BejeweledEngine engine) {
-		super(height, width);
+		super(height, width, engine);
 		this.engine = engine;
 		selection = null;
 	}

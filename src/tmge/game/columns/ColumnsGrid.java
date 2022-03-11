@@ -13,7 +13,7 @@ public class ColumnsGrid extends ColorInterface {
 	protected ColumnsEngine engine;
 		
 	public ColumnsGrid(int height, int width, ColumnsEngine engine) {
-		super(height, width);
+		super(height, width, engine);
 		this.engine = engine;
 	}
 
