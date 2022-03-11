@@ -8,11 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
-<<<<<<< Updated upstream
-=======
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
->>>>>>> Stashed changes
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
