@@ -48,6 +48,24 @@ public class Player {
 	}
 	
 	/**
+	 * Check whether a Player of the given username exists.
+	 * @param username Username of Player to check
+	 * @return Whether or not that username is associated with a Player
+	 */
+	public static boolean playerExists(String username) {
+		return players.containsKey(username);
+	}
+	
+	/**
+	 * Returns a Player with the given username, and creates one to return if one has not already been created.
+	 * @param username Username of Player to retrieve
+	 * @return Player associated with the username
+	 */
+	public static Player getOrCreate(String username) {
+		return playerExists(username) ? getPlayer(username) : createNew(username);
+	}
+	
+	/**
 	 * If the given username is not yet taken, create a new Player with the given username.
 	 * @param username String username to associate with Player
 	 * @return Player Created Player object if username not taken; null otherwise
