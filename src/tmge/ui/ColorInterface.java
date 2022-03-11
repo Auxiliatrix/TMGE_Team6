@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -28,9 +29,12 @@ public abstract class ColorInterface {
     // gridFrame
     protected JFrame frame;
     
-    public ColorInterface(int height, int width) {
+    protected WindowCloseReactable wcr;
+    
+    public ColorInterface(int height, int width, WindowCloseReactable wcr) {
     	this.height = height;
     	this.width = width;
+    	this.wcr = wcr;
         initialize();
     }
     
@@ -43,7 +47,13 @@ public abstract class ColorInterface {
         		onPress(e);
             }
         }); // enables key inputs
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                wcr.signalClosed();
+            }
+        });
         frame.setLayout(new BorderLayout());
         frame.setContentPane(new GridPane());
         // testing scoring ui pane
