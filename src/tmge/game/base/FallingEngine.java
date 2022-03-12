@@ -1,6 +1,5 @@
 package tmge.game.base;
 
-import tmge.ui.WindowCloseReactable;
 import util.tokens.Coordinate;
 import util.tokens.CoordinateGroup;
 
@@ -8,7 +7,7 @@ import util.tokens.CoordinateGroup;
  * An implementation of the GameEngine that includes game logic for games that involve gravity.
  * @param <E> Type of Tile to be stored in the Board.
  */
-public abstract class FallingEngine<E> extends GameEngine implements WindowCloseReactable {
+public abstract class FallingEngine<E> extends GameEngine {
 	
 	/**
 	 * Direction that gravity moves Tiles in.
@@ -19,14 +18,13 @@ public abstract class FallingEngine<E> extends GameEngine implements WindowClose
 	 * State of the Board stored by the Engine.
 	 */
 	protected TiledBoard<E> state;
-	
-	protected boolean kill;
-	
+		
 	public FallingEngine(TiledBoard<E> initialState) {
 		this.state = initialState;
 		kill = false;
 	}
-
+	
+	@Override
 	/**
 	 * Default logic checks if any Tiles fell. If not, it makes matches with the stabilized pieces.
 	 * @return True by default
@@ -36,31 +34,6 @@ public abstract class FallingEngine<E> extends GameEngine implements WindowClose
 			match();
 		}
 		return true;
-	}
-	
-	/**
-	 * Run final operations before closing the game.
-	 */
-	protected abstract void close();
-	
-	@Override
-	/**
-	 * Run logic to determine whether game should stop. If it should, run closing operations.
-	 * @return Whether the game should continue.
-	 */
-	public final boolean tick() {
-		if( kill || !update() ) {
-			close();
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Causes tick to return false no matter what.
-	 */
-	public void signalClosed() {
-		kill = true;
 	}
 	
 	/**
