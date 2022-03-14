@@ -20,12 +20,25 @@ Select the *(1) create new account option*, and enter a username for the account
 
 After logging in, a new prompt will appear asking which of the two tile matching games the user would like to play. 
 
-Select one, and a new window will appear with the selected game. (Careful, it may need to be opened from the task bar and might not pop to the foreground). 
+Select one, and a new window will appear with the selected game.
 
 Once the game reaches a game over state, or the game window is closed, the user's score will be printed to the console, along with the game prompt. 
 
 Users can play either game as much as they want, view their current high scores, or log out and into other users. 
 
 To exit the application, simply log out and select the *(4) exit* option from the prompt. 
+
+## Bejeweled
+
+Click a tile to select it. Click another, cardinally adjacent tile (one that is one tile to the north, east, south, or west) to swap their positions. You may also deselect a tile by clicking on it a second time.
+If this swap forms a line of three or more tiles of the same color in either the vertical or horizontal direction, the tiles will be removed from play, and your score will increase.
+If no such line is formed, then the tiles will become deselected, and no changes will be made.
+More tiles will fall to replace the missing tiles. You may exit the game at any time by closing the game window.
+
+## Columns
+
+Press the left and right arrow keys to move the falling columns to the left and to the right, respectively. Press the up key to cycle the order of the colors in the column. Press the down key to make the column fall faster.
+Columns will stop falling (and no longer be controllable) once they land upon either the ground, or another piece.
+The objective is to form lines of the same color in any direction, including diagonal. The game is over once pieces no longer have room to spawn in, although the game can be exited at any time by closing the game window.
 
 Thank you for using and playing our Tile Maching Game Environment! :) 
