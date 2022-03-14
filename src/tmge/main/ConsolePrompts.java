@@ -60,6 +60,7 @@ public class ConsolePrompts {
 
 	public static void gamePrompt(String playerName) throws InterruptedException {
 		Player currentPlayer;
+		String userInput = "";
 		if (playerName.equals("guest")) {
 			currentPlayer = Player.getOrCreate(Constants.DEFAULT_USER);
 			System.out.println("Playing as guest.");
@@ -67,9 +68,10 @@ public class ConsolePrompts {
 			currentPlayer = Player.getOrCreate(playerName);
 			System.out.println("Logging in as user: " + currentPlayer.getUsername() + ".");
 		}
-		String userInput = "";
-		while (!userInput.equals("3") && !userInput.equals("(3)")) {
-			System.out.println("What game would you like to play?\n(1) Bejeweled\n(2) Columns\n(3) Log out");
+		printPlayerScores(currentPlayer);
+		while (!userInput.equals("4") && !userInput.equals("(4)")) {
+			System.out.println(
+					"What game would you like to play?\n(1) Bejeweled\n(2) Columns\n(3) View my high scores\n(4) Log out");
 			userInput = myObj.nextLine();
 			switch (userInput) {
 			case "1":
@@ -83,8 +85,7 @@ public class ConsolePrompts {
 					Thread.sleep(100);
 				}
 				bejeweledGrid.takedown();
-				System.out.println("Game over, no moves left. Your score was " + bejeweledEngine.score
-						+ " Press 1 to play again.");
+				System.out.println("Game over. Your score was " + bejeweledEngine.score + " Press 1 to play again.");
 				break;
 			case "2":
 			case "(2)":
@@ -96,11 +97,14 @@ public class ConsolePrompts {
 					Thread.sleep(250);
 				}
 				columnsGrid.takedown();
-				System.out.println("Game over, height limit reached. Your score was " + columnsEngine.score
-						+ ". Press 2 to play again.");
+				System.out.println("Game over. Your score was " + columnsEngine.score + ". Press 2 to play again.");
 				break;
 			case "3":
 			case "(3)":
+				printPlayerScores(currentPlayer);
+				break;
+			case "4":
+			case "(4)":
 				System.out.println("Logging out " + currentPlayer.getUsername() + ". Thank you for playing.");
 				break;
 			default:
@@ -108,5 +112,10 @@ public class ConsolePrompts {
 				break;
 			}
 		}
+	}
+
+	public static void printPlayerScores(Player currentPlayer) {
+		System.out.println("Your high score for Bejeweled is currently: " + currentPlayer.getHighScore("BEJEWELED"));
+		System.out.println("Your high score for Columns is currently: " + currentPlayer.getHighScore("COLUMNS"));
 	}
 }
