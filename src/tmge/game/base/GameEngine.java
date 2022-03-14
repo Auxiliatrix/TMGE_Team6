@@ -30,7 +30,7 @@ public abstract class GameEngine implements WindowCloseReactable {
 	/**
 	 * Causes tick to return false no matter what.
 	 */
-	public void signalClosed() {
+	public final void signalClosed() {
 		kill = true;
 	}
 	

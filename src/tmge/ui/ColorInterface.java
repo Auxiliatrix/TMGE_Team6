@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
+import tmge.game.base.GameEngine;
 import tmge.game.base.TiledBoard;
 import util.tokens.Coordinate;
 
@@ -29,12 +30,12 @@ public abstract class ColorInterface {
     // gridFrame
     protected JFrame frame;
     
-    protected WindowCloseReactable wcr;
+    protected GameEngine ge;
     
-    public ColorInterface(int height, int width, WindowCloseReactable wcr) {
+    public ColorInterface(int height, int width, GameEngine engine) {
     	this.height = height;
     	this.width = width;
-    	this.wcr = wcr;
+    	this.ge = engine;
         initialize();
     }
     
@@ -51,7 +52,7 @@ public abstract class ColorInterface {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                wcr.signalClosed();
+                ge.signalClosed();
             }
         });
         frame.setLayout(new BorderLayout());
