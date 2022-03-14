@@ -12,7 +12,7 @@ You are currently in the `implementation` branch. This branch contains the demo 
 
 # Play Bejeweled or Columns
 
-To play a game of Bejeweled or Columns, first run the `Application.java` class.
+To play a game of Bejeweled or Columns, first run the command `java -jar TMGE.jar` in the command console. Alternatively, compile the code base and run the `Application.java` class.
 
 A prompt will appear on the console asking the user to create a Player account; this is optional and for scoring purposes, it won't affect the tile-matching game play. 
 
