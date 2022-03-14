@@ -8,6 +8,8 @@ This project contains our final submission for a tile-matching game environment 
 
 This application uses Java 16. It also uses components of the Java Swing package for the implementation of its user interface. 
 
+You are currently in the `implementation` branch. This branch contains the demo games built using the framework, and can be run by following the instructions below. In order to see the interface upon which games can be built, please access the `framework` branch.
+
 # Play Bejeweled or Columns
 
 To play a game of Bejeweled or Columns, first run the `Application.java` class.
